@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, CreateDateColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 import { User } from "./User";
 import { Book } from "./Book";
 
 @Entity()
-export class Transection {
+export class Transection extends BaseEntity {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -16,5 +16,14 @@ export class Transection {
 
     @ManyToOne(type => Book, book => book.transections)
     book: Book;
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @VersionColumn()
+    version: number;
 
 }

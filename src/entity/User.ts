@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany, BaseEntity, CreateDateColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 import { LineUser } from "./LineUser";
 import { Transection } from "./Transection";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -34,5 +34,14 @@ export class User {
 
     @OneToMany(type => Transection, transection => transection.user)
     transections: Transection[];
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @VersionColumn()
+    version: number;
 
 }

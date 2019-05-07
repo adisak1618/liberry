@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, BaseEntity, CreateDateColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 import { LineUser } from "./LineUser";
 
 @Entity()
-export class Action {
+export class Action extends BaseEntity {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -21,5 +21,14 @@ export class Action {
 
     @ManyToOne(type => LineUser, lineuser => lineuser.actions)
     lineUser: LineUser;
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @VersionColumn()
+    version: number;
 
 }

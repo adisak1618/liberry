@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, BaseEntity, CreateDateColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 import { Action } from "./Action";
 import { User } from "./User";
 
 @Entity()
-export class LineUser {
+export class LineUser extends BaseEntity {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -14,7 +14,10 @@ export class LineUser {
     @Column()
     path: string;
 
-    @Column()
+    @Column({
+        type: "boolean",
+        default: true,
+    })
     follow: boolean;
 
     // @OneToOne(type => Action, action => action.lineUser)
@@ -26,5 +29,14 @@ export class LineUser {
     @OneToOne(type => User, user => user.lineUser)
     @JoinColumn()
     user: User;
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @VersionColumn()
+    version: number;
 
 }

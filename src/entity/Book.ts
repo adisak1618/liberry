@@ -1,10 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, BaseEntity, CreateDateColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 import { Transection } from "./Transection";
 import { Category } from "./Category";
 import { Writer } from "./Writer";
 
 @Entity()
-export class Book {
+export class Book extends BaseEntity {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -38,5 +38,14 @@ export class Book {
 
     @ManyToOne(type => Writer, writer => writer.books)
     writer: Writer
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @VersionColumn()
+    version: number;
 
 }
