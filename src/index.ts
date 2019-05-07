@@ -1,48 +1,78 @@
 import "reflect-metadata";
+import { middleware } from "@line/bot-sdk";
 import { createConnection } from "typeorm";
 import * as express from "express";
 import * as bodyParser from "body-parser";
+import * as expressValidator from "express-validator";
+import * as cookieParser from "cookie-parser";
+import { config } from "./../line_config";
+import * as handleEvent from "./webhook";
 import { Request, Response } from "express";
-import { Routes } from "./routes";
-import { User } from "./entity/User";
+// import { Routes } from "./routes";
+console.log('adisakkrub', handleEvent.default);
 
-createConnection().then(async connection => {
+try {
+    createConnection().then(async connection => {
 
-    // create express app
-    const app = express();
-    app.use(bodyParser.json());
+        // create express app
+        const app = express();
+        app.set('view engine', 'pug')
+        app.use(express.static('public'))
+        app.use(express.urlencoded({ extended: false }));
+        app.use(cookieParser());
+        app.use(expressValidator());
+        // app.use(middleware(config));
+        // app.use(bodyParser.json());
 
-    // register express routes from defined application routes
-    Routes.forEach(route => {
-        (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-            const result = (new (route.controller as any))[route.action](req, res, next);
-            if (result instanceof Promise) {
-                result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
-
-            } else if (result !== null && result !== undefined) {
-                res.json(result);
-            }
+        app.get('/callback', (req, res) => {
+            res.send('success');
         });
-    });
 
-    // setup express app here
-    // ...
+        // app.use('/', Routes);
 
-    // start express server
-    app.listen(3000);
+        app.post('/callback', middleware(config), async (req: Request, res: Response) => {
+            Promise
+                .all(req.body.events.map(handleEvent.default))
+                .then((result) => res.json(result))
+                .catch((err) => {
+                    console.error('err');
+                    res.status(500).end();
+                });
+        });
+        // register express routes from defined application routes
+        // Routes.forEach(route => {
+        //     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
+        //         const result = (new (route.controller as any))[route.action](req, res, next);
+        //         if (result instanceof Promise) {
+        //             result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
 
-    // insert new users for test
-    // await connection.manager.save(connection.manager.create(User, {
-    //     firstName: "Timber",
-    //     lastName: "Saw",
-    //     age: 27
-    // }));
-    // await connection.manager.save(connection.manager.create(User, {
-    //     firstName: "Phantom",
-    //     lastName: "Assassin",
-    //     age: 24
-    // }));
+        //         } else if (result !== null && result !== undefined) {
+        //             res.json(result);
+        //         }
+        //     });
+        // });
 
-    console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
+        // setup express app here
+        // ...
 
-}).catch(error => console.log(error));
+        // start express server
+        app.listen(3000);
+
+        // insert new users for test
+        // await connection.manager.save(connection.manager.create(User, {
+        //     firstName: "Timber",
+        //     lastName: "Saw",
+        //     age: 27
+        // }));
+        // await connection.manager.save(connection.manager.create(User, {
+        //     firstName: "Phantom",
+        //     lastName: "Assassin",
+        //     age: 24
+        // }));
+
+        console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
+
+    }).catch(error => console.log(error));
+} catch (error) {
+    console.log('error fuckkkk');
+}
