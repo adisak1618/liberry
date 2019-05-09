@@ -4,7 +4,7 @@ const studentTemplate = require('./student');
 const borrowconfirmTemplate = require('./borrowconfirm');
 const returnBookConfirm = require('./returnBookConfirm');
 
-module.exports = {
+export {
   BookTemplate,
   studentTemplate,
   borrowconfirmTemplate,

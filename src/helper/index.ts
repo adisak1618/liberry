@@ -1,11 +1,11 @@
-import { Client } from "@line/bot-sdk";
+import { Client, Message } from "@line/bot-sdk";
 import { config } from "../../line_config";
 import * as queryString from "query-string";
 import { validationResult } from "express-validator/check";
 
 export const client = new Client(config);
 
-export const replyMessage = (replyToken: string, data: any) => {
+export const replyMessage = (replyToken: string, data: Message) => {
   return client.replyMessage(replyToken, data);
 }
 

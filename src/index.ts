@@ -8,8 +8,7 @@ import * as cookieParser from "cookie-parser";
 import { config } from "./../line_config";
 import * as handleEvent from "./webhook";
 import { Request, Response } from "express";
-// import { Routes } from "./routes";
-console.log('adisakkrub', handleEvent.default);
+import { Routes } from "./routes";
 
 try {
     createConnection().then(async connection => {
@@ -28,7 +27,7 @@ try {
             res.send('success');
         });
 
-        // app.use('/', Routes);
+        app.use('/', Routes);
 
         app.post('/callback', middleware(config), async (req: Request, res: Response) => {
             Promise

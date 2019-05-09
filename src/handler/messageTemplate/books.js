@@ -1,5 +1,4 @@
 module.exports = ({ cover, name, category, writer, page_count, publisher, count, bookid }) => {
-  console.log('wtf cover', cover)
   return {
     "type": "bubble",
     "hero": {

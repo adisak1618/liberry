@@ -11,7 +11,7 @@ export class LineUser extends BaseEntity {
     @Column()
     lineid: string;
 
-    @Column()
+    @Column({ type: "character varying", nullable: true })
     path: string;
 
     @Column({

@@ -1,4 +1,5 @@
 module.exports = ({ cover, name, category, writer, page_count, publisher, count, bookid }) => {
+  const aaa = cover || 'https://816b51aa.ngrok.io/images/default-thumbnail.jpg';
   return {
     "type": "flex",
     "altText": "Flex Message",
@@ -6,7 +7,7 @@ module.exports = ({ cover, name, category, writer, page_count, publisher, count,
       "type": "bubble",
       "hero": {
         "type": "image",
-        "url": cover,
+        "url": cover || 'https://816b51aa.ngrok.io/images/default-thumbnail.jpg',
         "size": "full",
         "aspectRatio": "3:4",
         "aspectMode": "cover"

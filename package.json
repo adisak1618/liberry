@@ -10,15 +10,22 @@
    "dependencies": {
       "@line/bot-sdk": "^6.7.0",
       "@types/dotenv": "^6.1.1",
+      "@types/express": "^4.16.1",
       "@types/node": "^8.0.29",
+      "@types/request-promise": "^4.1.43",
+      "aws-sdk": "^2.451.0",
       "body-parser": "^1.18.1",
       "cookie-parser": "^1.4.4",
       "dotenv": "^8.0.0",
       "express": "^4.15.4",
       "express-validator": "^5.3.1",
       "pg": "^7.3.0",
+      "pug": "^2.0.3",
       "query-string": "^6.5.0",
       "reflect-metadata": "^0.1.10",
+      "request": "^2.88.0",
+      "request-promise": "^4.2.4",
+      "sharp": "^0.22.1",
       "typeorm": "0.2.17"
    },
    "scripts": {

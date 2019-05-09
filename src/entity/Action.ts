@@ -13,10 +13,10 @@ export class Action extends BaseEntity {
     @Column()
     success: boolean;
 
-    @Column("jsonb")
+    @Column({ type: "jsonb", nullable: true })
     data: any;
 
-    @Column()
+    @Column({ type: "character varying", nullable: true })
     next: string;
 
     @ManyToOne(type => LineUser, lineuser => lineuser.actions)

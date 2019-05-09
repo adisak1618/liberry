@@ -27,7 +27,7 @@ export class Book extends BaseEntity {
     @Column("integer")
     count: number;
 
-    @Column()
+    @Column({ type: "character varying", nullable: true })
     cover: string;
 
     @OneToMany(type => Transection, transection => transection.book)

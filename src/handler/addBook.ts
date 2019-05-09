@@ -1,8 +1,12 @@
 const { client, replyMessage } = require('../helper');
-const { uploadFromUrl } = require('../helper/upload');
-const { BookTemplate } = require('./messageTemplate');
-const models = require('./../models');
-const { Op } = require('sequelize');
+import { uploadFromUrl } from "../helper/upload";
+import { BookTemplate } from "./messageTemplate";
+import { getManager, getConnection } from "typeorm";
+import { Writer } from "../entity/Writer";
+import { WebhookEvent, ReplyableEvent } from "@line/bot-sdk";
+import { Action } from "../entity/Action";
+import { LineUser } from "../entity/LineUser";
+import { Book } from "../entity/Book";
 const categoryLiffAppMsg = [{
   "type": "flex",
   "altText": "Flex Message",
@@ -73,10 +77,10 @@ const coverMsg = [{
       {
         "type": "action",
         "action": {
-          "type":"postback",
-          "label":"ข้าม",
-          "data":"cancle",
-          "displayText":"ยังไม่เพิ่ม"
+          "type": "postback",
+          "label": "ข้าม",
+          "data": "cancle",
+          "displayText": "ยังไม่เพิ่ม"
         }
       }
     ]
@@ -86,62 +90,75 @@ const coverMsg = [{
 const handler = {
   name: {
     message: () => [{ type: 'text', text: 'ชื่อหนังสือคือ?' }],
-    func: (event, action) => {
-      if(event.type === 'message' && event.message.type === 'text') {
-        return { name: event.message.text.trim() }
+    func: (event: WebhookEvent & ReplyableEvent, action: Action) => {
+      if (event.type === 'message' && event.message.type === 'text') {
+        return { name: event.message.text.trim().toLowerCase() }
       }
     }
   },
-  writer_id: {
+  writer: {
     message: () => [{ type: 'text', text: 'ชื่อผู้เขียนคือ?' }],
-    func: async (event, action) => {
-      if(event.type === 'message' && event.message.type === 'text') {
-        const msg = event.message.text.trim();
-        const [writer, created] = await models.writer.findOrCreate({
-          where: {
-            name: msg,
-          },
-          defaults: {
-            name: msg,
-          }
-        });
-        return { writer_id: writer.id }
+    func: async (event: WebhookEvent & ReplyableEvent, action: Action) => {
+      if (event.type === 'message' && event.message.type === 'text') {
+        const msg = event.message.text.trim().toLowerCase();
+        let writer = await getManager()
+          .createQueryBuilder(Writer, "lineuser")
+          .where({
+            name: msg
+          })
+          .getOne();
+        if (!writer) {
+          const newWriter = Writer.create({
+            name: msg
+          });
+          writer = await newWriter.save()
+        }
+
+        // const [writer, created] = await models.writer.findOrCreate({
+        //   where: {
+        //     name: msg,
+        //   },
+        //   defaults: {
+        //     name: msg,
+        //   }
+        // });
+        return { writer: writer.id }
       }
     }
   },
-  category: {
+  categoryAction: {
     message: () => categoryLiffAppMsg,
-    func: () => ({ category: true })
+    func: () => ({ categoryAction: true })
   },
   page_count: {
     message: () => [{ type: 'text', text: 'จำนวนหน้า?' }],
-    func: (event, action) => {
-      if(event.type === 'message' && event.message.type === 'text' && !isNaN(event.message.text.trim())) {
+    func: (event: WebhookEvent & ReplyableEvent, action: Action) => {
+      if (event.type === 'message' && event.message.type === 'text' && !isNaN(Number(event.message.text.trim()))) {
         return { page_count: event.message.text.trim() }
       }
     }
   },
   publisher: {
     message: () => [{ type: 'text', text: 'สำนักพิมพ์?' }],
-    func: (event, action) => {
-      if(event.type === 'message' && event.message.type === 'text') {
-        return { publisher: event.message.text.trim() }
+    func: (event: WebhookEvent & ReplyableEvent, action: Action) => {
+      if (event.type === 'message' && event.message.type === 'text') {
+        return { publisher: event.message.text.trim().toLowerCase() }
       }
     }
   },
   price: {
     message: () => [{ type: 'text', text: 'ราคา?' }],
-    func: (event, action) => {
-      if(event.type === 'message' && event.message.type === 'text' && !isNaN(event.message.text.trim())) {
+    func: (event: WebhookEvent & ReplyableEvent, action: Action) => {
+      if (event.type === 'message' && event.message.type === 'text' && !isNaN(Number(event.message.text.trim()))) {
         return { price: event.message.text.trim() }
       }
     }
   },
-  isbn_code: {
+  isbnCode: {
     message: () => [{ type: 'text', text: 'isbn?' }],
-    func: (event, action) => {
-      if(event.type === 'message' && event.message.type === 'text' && !isNaN(event.message.text.trim())) {
-        return { isbn_code: event.message.text.trim() }
+    func: (event: WebhookEvent & ReplyableEvent, action: Action) => {
+      if (event.type === 'message' && event.message.type === 'text' && !isNaN(Number(event.message.text.trim()))) {
+        return { isbnCode: event.message.text.trim() }
       }
     }
   },
@@ -194,21 +211,31 @@ const handler = {
         ]
       }
     }],
-    func: (event, action) => {
-      if(event.type === 'message' && !isNaN(event.message.text.trim())) {
+    func: (event: WebhookEvent & ReplyableEvent, action: Action) => {
+      if (event.type === 'message' && event.message.type === 'text' && !isNaN(Number(event.message.text.trim()))) {
         return { count: event.message.text.trim() };
       }
     }
   },
   cover: {
     message: () => coverMsg,
-    func: async (event, action, user) => {
-      if(event.type === 'message' && event.message.type === 'image' && event.message.contentProvider.type === 'line') {
-        const name = action.data.name || 'unknow';
-        const uploadImage = uploadFromUrl(`https://api.line.me/v2/bot/message/${event.message.id}/content`, `bookcover/${name.replace('/','')}-${(new Date()).getTime()}`, { Authorization: `Bearer ${process.env.channelAccessToken}` });
-        const pushMsg = client.pushMessage(user.lineid, { type: 'text', text: 'รอนิดนึงนะกำลังอัพโหลด....' });
-        const [data] = await Promise.all([uploadImage, pushMsg]);
-        return { cover: data.key };
+    func: async (event: WebhookEvent & ReplyableEvent, action: Action, user: LineUser) => {
+      if (event.type === 'message' && event.message.type === 'image' && event.message.contentProvider.type === 'line') {
+        try {
+          const name = action.data.name || 'unknow';
+          // const uploadImage = uploadFromUrl(`https://api.line.me/v2/bot/message/${event.message.id}/content`, `bookcover/${name.replace('/', '')}-${(new Date()).getTime()}`, { Authorization: `Bearer ${process.env.channelAccessToken}` });
+          const uploadImage = uploadFromUrl({
+            url: `https://api.line.me/v2/bot/message/${event.message.id}/content`,
+            name: `${name.replace('/', '')}-${(new Date()).getTime()}`,
+            RequestHeaders: { Authorization: `Bearer ${process.env.channelAccessToken}` },
+            folder: 'bookcover/'
+          });
+          const pushMsg = client.pushMessage(user.lineid, { type: 'text', text: 'รอนิดนึงนะกำลังอัพโหลด....' });
+          const [data] = await Promise.all([uploadImage, pushMsg]);
+          return { cover: data['key'] };
+        } catch (error) {
+          return replyMessage(event.replyToken, [{ type: 'text', text: 'อัพโหลดผิดพลาด!!! โปรดลองใหม่' }]);
+        }
       } else if (event.type === 'postback' && event.postback.data === 'cancle') {
         return { cover: null };
       }
@@ -216,17 +243,17 @@ const handler = {
   }
 };
 
-const init = async (action = { data: null }, event, user) => {
+const init = async (action: Action, event: WebhookEvent & ReplyableEvent, user: LineUser) => {
   try {
-    const requireDataList = ['name', 'writer_id', 'category', 'page_count', 'publisher', 'price', 'isbn_code', 'count', 'cover'];
+    const requireDataList = ['name', 'writer', 'categoryAction', 'page_count', 'publisher', 'price', 'isbnCode', 'count', 'cover'];
     const actionData = action.data || {};
     const RemainingJob = requireDataList.filter(item => !(item in actionData));
     if (!event) {
       return handler[RemainingJob[0]].message(); // first time init return first remaining job message
     } else if (RemainingJob.length > 1) {
-      if(handler[RemainingJob[0]].func) {
+      if (handler[RemainingJob[0]].func) {
         const result = await handler[RemainingJob[0]].func(event, action, user);
-        if(result) {
+        if (result) {
           action.data = { ...actionData, ...result };
           action.save();
         } else {
@@ -238,33 +265,25 @@ const init = async (action = { data: null }, event, user) => {
       return replyMessage(event.replyToken, [...nextMsg]);
     } else {
       const result = await handler[RemainingJob[0]].func(event, action, user);
-      if(result) {
+      if (result) {
         action.data = { ...actionData, ...result };
         action.success = true;
         action.save();
-        const transaction = await models.sequelize.transaction({ autocommit: false });
+        const connection = getConnection();
+        const queryRunner = connection.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
         try {
-          const newBook = await models.book.create(action.data, { transaction });
-          // console.log('newBook', newBook);
-          const book = await models.book.findOne({
-            where: {
-              id: newBook.id
-            },
-            transaction,
-            include: [
-              {
-                model: models.category,
-                as: 'category',
-              },
-              {
-                model: models.writer,
-                as: 'writer',
-              }
-            ],
-          });
+          const newBook = Book.create(action.data);
+          await queryRunner.manager.save(newBook);
+          const book = await queryRunner.manager.createQueryBuilder(Book, "book")
+            .leftJoinAndSelect("book.category", "category")
+            .leftJoinAndSelect("book.writer", "writer")
+            .where("book.id = :bookId", { bookId: newBook.id })
+            .getOne();
           const { cover, name, category, writer, page_count, publisher, count, id } = book;
           const newBookMsg = BookTemplate({
-            cover: `https://s3-ap-southeast-1.amazonaws.com/tcliberry/${cover}`,
+            cover: cover ? `https://s3-ap-southeast-1.amazonaws.com/tcliberry/${cover}` : `${process.env.BASEURL}/images/default-thumbnail.jpg`,
             name,
             category: category.name,
             writer: writer.name,
@@ -274,10 +293,12 @@ const init = async (action = { data: null }, event, user) => {
             bookid: id,
           })
           replyMessage(event.replyToken, [{ type: 'text', text: 'ดีใจด้วย หนังสือเล่มนี้พร้อมที่จะให้ยืมแล้ว!!!' }, newBookMsg]);
-          await transaction.commit();
+          await queryRunner.commitTransaction();
         } catch (error) {
-          replyMessage(event.replyToken, [{ type: 'text', text: 'เกิดปัญหาการอัพโหลดภาพโปรดลองใหม่!!!' }]);
-          transaction.rollback();
+          replyMessage(event.replyToken, [{ type: 'text', text: 'โปรดลองใหม่ บางอย่างผิดพลาดด' }]);
+          await queryRunner.rollbackTransaction();
+        } finally {
+          await queryRunner.release();
         }
       } else {
         const msg = handler[RemainingJob[0]].message();
@@ -289,19 +310,26 @@ const init = async (action = { data: null }, event, user) => {
   }
 };
 
-module.exports = async (event, action, user, query) => {
+export const addBook = async (event: WebhookEvent & ReplyableEvent, action: Action, user: LineUser, query: any) => {
   try {
     if (action) {
       init(action, event, user);
     } else {
-      const newAction = await models.action.create({
+      const newAction = Action.create({
         job: 'addBook',
         success: false,
-        step: 0,
-        line_user_id: user.id,
-        data: query,
-      });
-      const initMessage = await init(newAction, null); // first remaining job message
+        lineUser: user,
+        data: query
+      })
+      await newAction.save()
+      // const newAction = await models.action.create({
+      //   job: 'addBook',
+      //   success: false,
+      //   step: 0,
+      //   line_user_id: user.id,
+      //   data: query,
+      // });
+      const initMessage = await init(newAction, null, null); // first remaining job message
       return replyMessage(event.replyToken, [{ type: 'text', text: 'เริ่มลงทะเบียนหนังสือกันเลย!!!' }, ...initMessage]);
     }
   } catch (e) {
