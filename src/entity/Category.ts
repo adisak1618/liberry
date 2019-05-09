@@ -10,7 +10,7 @@ export class Category extends BaseEntity {
     @Column()
     name: string;
 
-    @Column("text")
+    @Column({ type: "text", nullable: true })
     description: string;
 
     @OneToMany(type => Book, book => book.category)
