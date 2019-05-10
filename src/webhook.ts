@@ -28,6 +28,7 @@ export default async (event: WebhookEvent): Promise<any> => {
     const msg: TextMessage = { type: 'text', text: 'สวัสดี :)' };
     return replyMessage(event.replyToken, msg);
   } else {
+    // console.log('user', user);
     const { actions } = user;
     if (event.type === 'postback') {
       const { name, query } = parseQueryString(event.postback.data)

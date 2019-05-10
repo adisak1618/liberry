@@ -9,11 +9,12 @@ import { config } from "./../line_config";
 import * as handleEvent from "./webhook";
 import { Request, Response } from "express";
 import { Routes } from "./routes";
+import { LineUser } from "./entity/LineUser";
 
 const port = process.env.PORT || 3000;
-
+const connectionName: string = process.env.NODE_ENV === 'production' ? 'production' : 'default';
 try {
-    createConnection().then(async connection => {
+    createConnection(connectionName).then(async connection => {
 
         // create express app
         const app = express();

@@ -20,6 +20,7 @@
       "express": "^4.15.4",
       "express-validator": "^5.3.1",
       "pg": "^7.3.0",
+      "pg-connection-string": "^2.0.0",
       "pug": "^2.0.3",
       "query-string": "^6.5.0",
       "reflect-metadata": "^0.1.10",
@@ -33,7 +34,7 @@
       "build-ts": "tsc",
       "postinstall": "npm run build-ts",
       "dev": "ts-node-dev --respawn src/index.ts",
-      "start": "node build/src/index.js",
+      "start": "NODE_ENV=production node build/src/index.js",
       "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
    },
    "main": "index.js",
