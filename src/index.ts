@@ -36,7 +36,7 @@ try {
                 .all(req.body.events.map(handleEvent.default))
                 .then((result) => res.json(result))
                 .catch((err) => {
-                    console.error('err');
+                    console.error('err', err);
                     res.status(500).end();
                 });
         });
