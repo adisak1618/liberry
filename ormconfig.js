@@ -1,5 +1,5 @@
-import * as PostgressConnectionStringParser from 'pg-connection-string';
-const connectionOptions = PostgressConnectionStringParser.parse(process.env.DATABASE_URL);
+const parse = require('pg-connection-string').parse;
+const connectionOptions = parse(process.env.DATABASE_URL);
 
 console.log('__dirname', __dirname);
 module.exports = [
