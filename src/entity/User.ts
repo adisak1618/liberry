@@ -11,7 +11,7 @@ export class User extends BaseEntity {
     @Column()
     userCode: string;
 
-    @Column()
+    @Column({ type: "character varying", nullable: true })
     nickname: string;
 
     @Column()

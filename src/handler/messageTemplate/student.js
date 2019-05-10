@@ -1,4 +1,4 @@
-module.exports = ({ profile_picture, fullname, user_code, tel, user_class, id }) => {
+module.exports = ({ profilePicture, fullname, userCode, tel, userClass, id }) => {
   return {
     "type": "flex",
     "altText": "Flex Message",
@@ -6,7 +6,7 @@ module.exports = ({ profile_picture, fullname, user_code, tel, user_class, id })
       "type": "bubble",
       "hero": {
         "type": "image",
-        "url": profile_picture,
+        "url": profilePicture,
         "size": "full",
         "aspectRatio": "1:1",
         "aspectMode": "cover"
@@ -25,7 +25,7 @@ module.exports = ({ profile_picture, fullname, user_code, tel, user_class, id })
           },
           {
             "type": "text",
-            "text": `รหัสนักเรียน: ${user_code}`,
+            "text": `รหัสนักเรียน: ${userCode}`,
             "margin": "sm",
             "size": "md",
             "align": "center",
@@ -74,7 +74,7 @@ module.exports = ({ profile_picture, fullname, user_code, tel, user_class, id })
                   },
                   {
                     "type": "text",
-                    "text": user_class,
+                    "text": userClass,
                     "flex": 5,
                     "size": "sm",
                     "color": "#666666",
@@ -97,7 +97,7 @@ module.exports = ({ profile_picture, fullname, user_code, tel, user_class, id })
             "action": {
               "type": "postback",
               "label": "คืน",
-              "data": `returnBook?user_id=${id}`,
+              "data": `returnBook?user=${id}`,
               "displayText": `เริ่มคืนหนังสือให้ ${fullname}`
             },
             "height": "sm",
@@ -108,7 +108,7 @@ module.exports = ({ profile_picture, fullname, user_code, tel, user_class, id })
             "action": {
               "type": "postback",
               "label": "ยืม",
-              "data": `borrowBook?user_id=${id}`,
+              "data": `borrowBook?user=${id}`,
               "displayText": `เริ่มยืมหนังสือให้ ${fullname}`
             },
             "height": "sm",

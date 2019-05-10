@@ -1,4 +1,4 @@
-module.exports = ({ cover, fullname, user_code, bookname }) => {
+module.exports = ({ cover, fullname, userCode, bookname }) => {
   return {
     "type": "flex",
     "altText": "Flex Message",
@@ -25,7 +25,7 @@ module.exports = ({ cover, fullname, user_code, bookname }) => {
           },
           {
             "type": "text",
-            "text": `รหัสนักเรียน: ${user_code}`,
+            "text": `รหัสนักเรียน: ${userCode}`,
             "margin": "sm",
             "size": "md",
             "align": "center",

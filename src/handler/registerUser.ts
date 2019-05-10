@@ -1,11 +1,10 @@
+const { client, replyMessage } = require('../helper');
 import { User } from "../entity/User";
 import { WebhookEvent, ReplyableEvent, LeaveEvent, UnfollowEvent } from "@line/bot-sdk";
 import { Action } from "../entity/Action";
 import { LineUser } from "../entity/LineUser";
-
-const { client, replyMessage } = require('../helper');
-const { uploadFromUrl } = require('../helper/upload');
-const { studentTemplate } = require('./messageTemplate');
+import { uploadFromUrl } from "../helper/upload";
+import { studentTemplate } from "./messageTemplate";
 // const models = require('../models');
 // const { Op } = require('sequelize');
 const profileMsg = [{
@@ -56,12 +55,12 @@ const validateClass = (value) => {
 }
 
 const handler = {
-  user_code: {
+  userCode: {
     message: () => [{ type: 'text', text: 'รหัสนักเรียน?' }],
     func: async (event: WebhookEvent, action: Action) => {
       if (event.type === 'message' && event.message.type === 'text' && !isNaN(Number(event.message.text.trim()))) {
         const msg = event.message.text.trim();
-        const user = User.findOne({
+        const user = await User.findOne({
           where: {
             userCode: msg,
           }
@@ -69,7 +68,7 @@ const handler = {
         if (user) {
           throw Error('ลงทะเบียนรหัสนักเรียนอันนี้ไปแล้ว!');
         }
-        return { user_code: msg }
+        return { userCode: msg }
       }
     }
   },
@@ -81,7 +80,7 @@ const handler = {
       }
     }
   },
-  user_class: {
+  userClass: {
     message: () => [{ type: 'text', text: 'ชั้นเรียน? (โปรดใส่ในรูปแบบนี้เช่น 6/1, 4/3)' }],
     func: async (event: WebhookEvent, action: Action) => {
       if (event.type === 'message' && event.message.type === 'text') {
@@ -91,7 +90,7 @@ const handler = {
           // something wrong
           throw result;
         }
-        return { user_class: `ม${event.message.text.trim()}` }
+        return { userClass: `m${event.message.text.trim()}` }
       }
     }
   },
@@ -112,17 +111,26 @@ const handler = {
       throw Error('โปรดใส่เบอร์โทรศัพท์เป็นตัวเลข!');
     }
   },
-  profile_picture: {
+  profilePicture: {
     message: () => profileMsg,
     func: async (event: WebhookEvent, action: Action, user: LineUser) => {
       if (event.type === 'message' && event.message.type === 'image' && event.message.contentProvider.type === 'line') {
-        const name = action.data.user_code || 'unknow';
-        const uploadImage = await uploadFromUrl(`https://api.line.me/v2/bot/message/${event.message.id}/content`, `studentprofile/${name.replace('/', '')}-${(new Date()).getTime()}`, { Authorization: `Bearer ${process.env.channelAccessToken}` });
-        const pushMsg = client.pushMessage(user.lineid, { type: 'text', text: 'รอนิดนึงนะกำลังอัพโหลด....' });
-        const [data] = await Promise.all([uploadImage, pushMsg]);
-        return { profile_picture: data.key };
+        try {
+          const name = action.data.userCode || 'unknow';
+          const uploadImage = uploadFromUrl({
+            url: `https://api.line.me/v2/bot/message/${event.message.id}/content`,
+            name: `${name.replace('/', '')}-${(new Date()).getTime()}`,
+            RequestHeaders: { Authorization: `Bearer ${process.env.channelAccessToken}` },
+            folder: "studentprofile/"
+          });
+          const pushMsg = client.pushMessage(user.lineid, { type: 'text', text: 'รอนิดนึงนะกำลังอัพโหลด....' });
+          const [data] = await Promise.all([uploadImage, pushMsg]);
+          return { profilePicture: data["key"] };
+        } catch (error) {
+          return replyMessage(event.replyToken, [{ type: 'text', text: 'อัพโหลดผิดพลาด!!! โปรดลองใหม่' }]);
+        }
       } else if (event.type === 'postback' && event.postback.data === 'cancle') {
-        return { profile_picture: null };
+        return { profilePicture: null };
       }
     }
   }
@@ -130,7 +138,7 @@ const handler = {
 
 const init = async (action: Action, event: WebhookEvent & ReplyableEvent, user: LineUser) => {
   const actionData = action.data || {};
-  const requireDataList = ['user_code', 'fullname', 'user_class', 'age', 'tel', 'profile_picture'];
+  const requireDataList = ['userCode', 'fullname', 'userClass', 'age', 'tel', 'profilePicture'];
   const RemainingJob = requireDataList.filter(item => !(item in actionData));
   try {
     if (!event) {
@@ -152,17 +160,25 @@ const init = async (action: Action, event: WebhookEvent & ReplyableEvent, user: 
         action.data = { ...actionData, ...result };
         action.success = true;
         action.save();
-        const newStuent = await User.create(action.data)
+        const newStuent = User.create(action.data);
+        await newStuent.save();
+        console.log('newStuent', newStuent);
         // const newStuent = await models.user.create(action.data);
-        const { profilePicture, fullname, userCode, tel, userClass, id } = newStuent;
-        const studentCardMsg = studentTemplate({ profile_picture: `https://s3-ap-southeast-1.amazonaws.com/tcliberry/${profilePicture}`, fullname, userCode, tel, userClass, id });
-        return replyMessage(event.replyToken, [{ type: 'text', text: 'ดีใจด้วย ลงทะเบียนนักเรียนเสร็จแล้ว' }, studentCardMsg]);
+        try {
+          const { profilePicture, fullname, userCode, tel, userClass, id } = newStuent;
+          const studentCardMsg = studentTemplate({ profilePicture: `https://s3-ap-southeast-1.amazonaws.com/tcliberry/${profilePicture}`, fullname, userCode, tel, userClass, id });
+          console.log('studentCardMsg', studentCardMsg);
+          return replyMessage(event.replyToken, [{ type: 'text', text: 'ดีใจด้วย ลงทะเบียนนักเรียนเสร็จแล้ว' }, studentCardMsg]);
+        } catch (error) {
+          console.log('adisakkksadkfkerror', error);
+        }
       } else {
         const msg = handler[RemainingJob[0]].message();
         return replyMessage(event.replyToken, [{ type: 'text', text: 'ข้อมูลไม่ถูกต้องโปรดลองใหม่!!!' }, ...msg]);
       }
     }
   } catch (error) {
+    console.log('fuckerrororororor', error)
     const msg = handler[RemainingJob[0]].message();
     return replyMessage(event.replyToken, [{ type: 'text', text: error.message }, ...msg]);
   }
@@ -173,11 +189,12 @@ export const registerUser = async (event: WebhookEvent & ReplyableEvent, action:
     if (action) {
       init(action, event, user);
     } else {
-      const newAction = await Action.create({
+      const newAction = Action.create({
         job: 'registerUser',
         success: false,
         lineUser: user,
       });
+      await newAction.save()
       const initMessage = await init(newAction, null, null); // first remaining job message
       return replyMessage(event.replyToken, [{ type: 'text', text: 'เริ่มลงทะเบียนนักเรียนกันเลย!!!' }, ...initMessage]);
     }
