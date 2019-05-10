@@ -1,8 +1,10 @@
 {
    "compilerOptions": {
       "lib": [
-         "es5",
-         "es6"
+         "dom",
+         "es6",
+         "es2017",
+         "esnext.asynciterable"
       ],
       "allowJs": true,
       "target": "es5",
