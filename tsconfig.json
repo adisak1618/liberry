@@ -6,6 +6,7 @@
          "es2017",
          "esnext.asynciterable"
       ],
+      "baseUrl": "./",
       "allowJs": true,
       "target": "es5",
       "module": "commonjs",

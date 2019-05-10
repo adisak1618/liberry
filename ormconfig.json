@@ -5,7 +5,7 @@
    "username": "postgres",
    "password": "postgres",
    "database": "liberry",
-   "synchronize": true,
+   "synchronize": false,
    "logging": true,
    "entities": [
       "src/entity/**/*.js"
