@@ -1,6 +1,6 @@
 import { resolve } from "path"
 import * as dotenv from "dotenv";
-dotenv.config({ path: resolve(__dirname, "./.env") })
+dotenv.config({ path: resolve(__dirname, "./../.env") })
 interface MiddlewareConfig {
   channelAccessToken: string;
   channelSecret: string;

@@ -39,7 +39,7 @@ module.exports = [
       "synchronize": true,
       "logging": true,
       "entities": [
-         __dirname + "/src/entity/**/*.ts"
+         __dirname + "/build/src/entity/**/*.js"
       ],
       "migrations": [
          "src/migration/**/*.ts"
