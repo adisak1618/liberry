@@ -1,6 +1,7 @@
 import { resolve } from "path"
 import * as dotenv from "dotenv";
-dotenv.config({ path: resolve(__dirname, "./../.env") })
+const path = process.env.NODE_ENV === 'production' ? "./../.env" : "./.env";
+dotenv.config({ path: resolve(__dirname, path) })
 interface MiddlewareConfig {
   channelAccessToken: string;
   channelSecret: string;

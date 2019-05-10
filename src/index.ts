@@ -10,13 +10,13 @@ import * as handleEvent from "./webhook";
 import { Request, Response } from "express";
 import { Routes } from "./routes";
 import { LineUser } from "./entity/LineUser";
+import { createTypeormConn } from "./utils/createTypeormConn";
 
 const port = process.env.PORT || 3000;
 const connectionName: string = process.env.NODE_ENV === 'production' ? 'production' : 'default';
 console.log('connectionName', connectionName, process.env.NODE_ENV, process.env.NODE_ENV === 'production');
 try {
-    createConnection(connectionName).then(async connection => {
-
+    createTypeormConn().then(async () => {
         // create express app
         const app = express();
         app.set('view engine', 'pug')
@@ -74,7 +74,7 @@ try {
         // }));
 
         console.log(`Express server has started on port ${port}. Open http://localhost:${port} to see results`);
+    })
 
-    }).catch(error => console.log(error));
 } catch (error) {
 }

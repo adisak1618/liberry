@@ -7,14 +7,11 @@ import * as handler from "./handler";
 import { uploadFromUrl } from "./helper/upload";
 import { createRichMenu } from "./helper/createRichMenu";
 import { LineUser } from './entity/LineUser';
-import { Action } from './entity/Action';
-import { createQueryBuilder, getConnection, getManager } from 'typeorm';
+import { createQueryBuilder, getConnection, getManager, getConnectionManager } from 'typeorm';
 
 export default async (event: WebhookEvent): Promise<any> => {
   console.log('event', event);
-  const connectionName: string = process.env.NODE_ENV === 'production' ? 'production' : 'default';
-  console.log('connectionName222', connectionName);
-  let user = await getManager(connectionName)
+  let user = await getManager()
     .createQueryBuilder(LineUser, "lineuser")
     .leftJoinAndSelect("lineuser.actions", "action", "action.success = :isSuccess", { isSuccess: false })
     .getOne();
