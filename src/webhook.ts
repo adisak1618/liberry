@@ -13,6 +13,7 @@ import { createQueryBuilder, getConnection, getManager } from 'typeorm';
 export default async (event: WebhookEvent): Promise<any> => {
   console.log('event', event);
   const connectionName: string = process.env.NODE_ENV === 'production' ? 'production' : 'default';
+  console.log('connectionName222', connectionName);
   let user = await getManager(connectionName)
     .createQueryBuilder(LineUser, "lineuser")
     .leftJoinAndSelect("lineuser.actions", "action", "action.success = :isSuccess", { isSuccess: false })
@@ -25,6 +26,7 @@ export default async (event: WebhookEvent): Promise<any> => {
     user = await newLineUser.save()
     await client.linkRichMenuToUser(event.source.userId, 'richmenu-50c085d05b629654dcd50ace8bf32d20');
   }
+  console.log('adisakeieiei', user);
   if (event.type === 'follow') {
     const msg: TextMessage = { type: 'text', text: 'สวัสดี :)' };
     return replyMessage(event.replyToken, msg);
