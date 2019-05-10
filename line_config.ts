@@ -7,6 +7,6 @@ interface MiddlewareConfig {
 }
 
 export const config: MiddlewareConfig = {
-  channelAccessToken: 'process.env.channelAccessToken',
-  channelSecret: 'process.env.channelSecret',
+  channelAccessToken: process.env.channelAccessToken,
+  channelSecret: process.env.channelSecret,
 };
