@@ -13,6 +13,7 @@ import { LineUser } from "./entity/LineUser";
 
 const port = process.env.PORT || 3000;
 const connectionName: string = process.env.NODE_ENV === 'production' ? 'production' : 'default';
+console.log('connectionName', connectionName, process.env.NODE_ENV, process.env.NODE_ENV === 'production');
 try {
     createConnection(connectionName).then(async connection => {
 
