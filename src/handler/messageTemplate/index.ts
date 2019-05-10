@@ -1,8 +1,8 @@
-const BookTemplate = require('./book');
-const BooksTemplate = require('./books');
-const studentTemplate = require('./student');
-const borrowconfirmTemplate = require('./borrowconfirm');
-const returnBookConfirm = require('./returnBookConfirm');
+import * as BookTemplate from "./book";
+import * as BooksTemplate from "./books";
+import * as studentTemplate from "./student";
+import * as borrowconfirmTemplate from "./borrowconfirm";
+import * as returnBookConfirm from "./returnBookConfirm";
 
 export {
   BookTemplate,
