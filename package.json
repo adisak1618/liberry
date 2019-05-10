@@ -29,7 +29,10 @@
       "typeorm": "0.2.17"
    },
    "scripts": {
-      "start": "ts-node-dev --respawn src/index.ts"
+      "build-ts": "tsc",
+      "postinstall": "npm run build-ts",
+      "dev": "ts-node-dev --respawn src/index.ts",
+      "start": "node build/index.js"
    },
    "main": "index.js",
    "license": "MIT"
