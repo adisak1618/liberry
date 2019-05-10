@@ -12,6 +12,7 @@ import { createQueryBuilder, getConnection, getManager } from 'typeorm';
 
 export default async (event: WebhookEvent): Promise<any> => {
   console.log('event', event);
+  console.log('env', process.env);
   let user = await getManager()
     .createQueryBuilder(LineUser, "lineuser")
     .leftJoinAndSelect("lineuser.actions", "action", "action.success = :isSuccess", { isSuccess: false })

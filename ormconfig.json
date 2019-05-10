@@ -5,16 +5,16 @@
    "username": "postgres",
    "password": "postgres",
    "database": "liberry",
-   "synchronize": false,
+   "synchronize": true,
    "logging": true,
    "entities": [
-      "build/src/entity/**/*.js"
+      "src/entity/**/*.ts"
    ],
    "migrations": [
-      "build/src/migration/**/*.js"
+      "src/migration/**/*.ts"
    ],
    "subscribers": [
-      "build/src/subscriber/**/*.js"
+      "src/subscriber/**/*.ts"
    ],
    "cli": {
       "entitiesDir": "src/entity",
