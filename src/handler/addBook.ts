@@ -46,8 +46,8 @@ const categoryLiffAppMsg = [{
           "type": "button",
           "action": {
             "type": "uri",
-            "label": "กดเพื่อเลือก",
-            "uri": "line://app/1568430904-8Wmd7qbb"
+            "label": "กดเพื่อเลือก2",
+            "uri": "line://app/1573406906-RkbAeGd9"
           },
           "style": "primary"
         }
@@ -281,6 +281,7 @@ const init = async (action: Action, event: WebhookEvent & ReplyableEvent, user: 
             .leftJoinAndSelect("book.writer", "writer")
             .where("book.id = :bookId", { bookId: newBook.id })
             .getOne();
+
           const { cover, name, category, writer, page_count, publisher, count, id } = book;
           const newBookMsg = BookTemplate({
             cover: cover ? `https://s3-ap-southeast-1.amazonaws.com/tcliberry/${cover}` : `${process.env.BASEURL}/images/default-thumbnail.jpg`,

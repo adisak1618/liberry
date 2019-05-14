@@ -11,6 +11,7 @@ import { createQueryBuilder, getConnection, getManager, getConnectionManager } f
 
 export default async (event: WebhookEvent): Promise<any> => {
   console.log('event', event);
+  // await createRichMenu();
   let user = await getManager()
     .createQueryBuilder(LineUser, "lineuser")
     .leftJoinAndSelect("lineuser.actions", "action", "action.success = :isSuccess", { isSuccess: false })
@@ -21,11 +22,12 @@ export default async (event: WebhookEvent): Promise<any> => {
     newLineUser.path = "";
     newLineUser.follow = true;
     user = await newLineUser.save()
-    await client.linkRichMenuToUser(event.source.userId, 'richmenu-50c085d05b629654dcd50ace8bf32d20');
+    await client.linkRichMenuToUser(event.source.userId, 'richmenu-5bc418ec51d112bb230c38b6238fc0f2');
   }
   console.log('adisakeieiei', user);
   if (event.type === 'follow') {
     const msg: TextMessage = { type: 'text', text: 'สวัสดี :)' };
+    // await client.linkRichMenuToUser(event.source.userId, 'richmenu-50c085d05b629654dcd50ace8bf32d20');
     return replyMessage(event.replyToken, msg);
   } else {
     // console.log('user', user);

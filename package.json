@@ -5,7 +5,7 @@
    "devDependencies": {
       "ts-node": "^8.1.0",
       "ts-node-dev": "^1.0.0-pre.35",
-      "typescript": "3.3.3333"
+      "typescript": "^3.4.5"
    },
    "dependencies": {
       "@line/bot-sdk": "^6.7.0",
@@ -32,9 +32,10 @@
    },
    "scripts": {
       "build-ts": "tsc",
+      "watch": "tsc --w",
       "postinstall": "npm run build-ts",
       "dev": "ts-node-dev --respawn src/index.ts",
-      "start": "NODE_ENV=production node build/src/index.js",
+      "start": "NODE_ENV=develop nodemon build/index.js",
       "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
    },
    "main": "index.js",

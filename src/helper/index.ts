@@ -1,9 +1,12 @@
 import { Client, Message } from "@line/bot-sdk";
-import { config } from "../../line_config";
+import { Request, Response } from "express";
 import * as queryString from "query-string";
 import { validationResult } from "express-validator/check";
 
-export const client = new Client(config);
+export const client = new Client({
+  channelAccessToken: process.env.channelAccessToken,
+  channelSecret: process.env.channelSecret
+});
 
 export const replyMessage = (replyToken: string, data: Message) => {
   return client.replyMessage(replyToken, data);
@@ -19,7 +22,7 @@ export const parseQueryString = (str: string) => {
   return data;
 }
 
-export const response = (res, data, errorcode, message) => {
+export const response = (res: any, data: any, errorcode: any, message: any) => {
   if (errorcode === undefined) {
     res.json(data);
   } else {
@@ -32,7 +35,7 @@ export const response = (res, data, errorcode, message) => {
   }
 };
 
-export const validateBody = (req, res, next) => {
+export const validateBody = (req: Request, res: Response, next: any) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });

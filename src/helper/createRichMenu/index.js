@@ -54,6 +54,7 @@ exports.createRichMenu = async () => {
     ]
   });
   const file = await client.setRichMenuImage(newMenuID, fs.createReadStream(path.resolve(__dirname, 'adminmenu.jpg')));
+  console.log('newMenuID', newMenuID);
   // const setMenu = await client.setDefaultRichMenu(newMenuID);
   // const data = await client.deleteDefaultRichMenu();
   // try {

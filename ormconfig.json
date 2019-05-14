@@ -10,13 +10,13 @@
     "synchronize": true,
     "logging": true,
     "entities": [
-      "src/entity/**/*.ts"
+      "build/entity/**/*.js"
     ],
     "migrations": [
-      "src/migration/**/*.ts"
+      "build/migration/**/*.js"
     ],
     "subscribers": [
-      "src/subscriber/**/*.ts"
+      "build/subscriber/**/*.jss"
     ],
     "cli": {
       "entitiesDir": "src/entity",
