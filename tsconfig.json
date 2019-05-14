@@ -1,27 +1,30 @@
 {
-   "compilerOptions": {
-      "lib": [
-         "dom",
-         "es6",
-         "es2017",
-         "esnext.asynciterable"
-      ],
-      // "baseUrl": "./",
-      "rootDir": "src",
-      "allowJs": true,
-      "target": "es5",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "outDir": "./build",
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "sourceMap": true
-   },
-   "include": [
-      "src/**/*"
-   ],
-   "exclude": [
-      "node_modules",
-      "public"
-   ]
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es6",
+      "es2017",
+      "esnext.asynciterable"
+    ],
+    // "baseUrl": "./",
+    "rootDir": "src",
+    "allowJs": true,
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": false
+  },
+  "include": [
+    "./src/**/*",
+    "./src/**/*.graphql"
+  ],
+  "exclude": [
+    "node_modules",
+    "public"
+  ]
 }

@@ -7,7 +7,7 @@ import * as handler from "./handler";
 import { uploadFromUrl } from "./helper/upload";
 import { createRichMenu } from "./helper/createRichMenu";
 import { LineUser } from './entity/LineUser';
-import { createQueryBuilder, getConnection, getManager, getConnectionManager } from 'typeorm';
+import { getManager } from 'typeorm';
 
 export default async (event: WebhookEvent): Promise<any> => {
   console.log('event', event);
