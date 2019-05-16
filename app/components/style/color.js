@@ -1,0 +1,28 @@
+const colors = {
+  mainColor: '#ffcc60',
+  blackBackgroundColor: '#414141',
+  grayBackgroundColor: '#f4f5f8',
+  secondaryTextColor: '#9B9B9B',
+  mainDarkColor: '#fabd3d',
+  mainButtonColor: '#0078FF',
+  blurDark: '#323232',
+  black: '#000',
+  bigStone: '#183544',
+  textColor: '#111111',
+  gray: '#DBDBDB',
+  miniGreen: '#37C883',
+  miniGray: '#EDEDED',
+  miniWhite: '#f7f7f7',
+  warning: '#f57c00',
+  warningBg: '#FFE9AB',
+  red: '#ea0e16',
+  danger: '#e74c3c',
+  miniRed: '#ff8c8c',
+  success: '#5ECD58',
+  white: '#FFF',
+  blueOcean: '#488bf8',
+  heavyGray: '#D4D4D4',
+  facebookColor: '#49639F',
+};
+
+module.exports = colors;

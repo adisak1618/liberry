@@ -25,7 +25,7 @@ const initializeApp = (data) => {
         }]).then(function () {
             liff.closeWindow();
         }).catch(function (error) {
-            window.alert("Error " + error);
+            window.alert("Error " + error.message);
         });
       })
       .fail(function() {

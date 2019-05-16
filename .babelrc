@@ -1,0 +1,44 @@
+{
+  "presets": [
+    "next/babel"
+  ],
+  "plugins": [
+    "inline-dotenv",
+    [
+      "babel-plugin-styled-components",
+      {
+        "ssr": true,
+        "displayName": true,
+        "preprocess": false
+      }
+    ],
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./app"
+        ],
+        "alias": {
+          "components": "./app/components",
+          "store": "./app/store",
+          "layouts": "./app/layouts",
+          "config": "./app/config",
+          "helper": "./app/helper",
+          "apolloComponents": "./app/apolloComponents"
+        }
+      }
+    ],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ]
+  ]
+}

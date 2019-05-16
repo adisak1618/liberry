@@ -16,7 +16,7 @@
       "build/migration/**/*.js"
     ],
     "subscribers": [
-      "build/subscriber/**/*.jss"
+      "build/subscriber/**/*.js"
     ],
     "cli": {
       "entitiesDir": "src/entity",

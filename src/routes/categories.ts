@@ -13,4 +13,12 @@ router.get('/', async (req: Request, res: Response) => {
   res.render('index', { title: 'Express', categories });
 });
 
+router.get('/test', async (req: Request, res: Response) => {
+  const categories = await Category.find()
+  // const categories = await models.category.findAll({
+  //   raw: true,
+  // });
+  res.render('test', { title: 'Express', categories });
+});
+
 export const categoriesRoutes = router;

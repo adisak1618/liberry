@@ -1,0 +1,15 @@
+type Staff {
+  id: ID
+  name: String!
+  lineid: String!
+  role: String!
+  createdAt: Date
+  updatedAt: String
+  profile_url: String
+  version: Int
+}
+
+type Query {
+  findStaffs: [Staff]
+}
+

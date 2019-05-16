@@ -25,18 +25,18 @@ const nextApp = next({
 });
 const handle = nextApp.getRequestHandler();
 const schema = genSchema() as any;
-@Resolver()
-class HelloResolver {
-    @Query(() => String, { nullable: true, description: "first resolver" })
-    async hello() {
-        return "Hello World!";
-    }
+// @Resolver()
+// class HelloResolver {
+//     @Query(() => String, { nullable: true, description: "first resolver" })
+//     async hello() {
+//         return "Hello World!";
+//     }
 
-    @Query(() => String, { nullable: true, description: "second resolver" })
-    async hello2() {
-        return "Hello World2!";
-    }
-}
+//     @Query(() => String, { nullable: true, description: "second resolver" })
+//     async hello2() {
+//         return "Hello World2!";
+//     }
+// }
 
 try {
     const main = async () => {
@@ -47,41 +47,36 @@ try {
         const apolloServer = new ApolloServer({ schema });
         await createTypeormConn().then(async () => {
             // create express app
-            nextApp.prepare()
-                .then(() => {
-                    const app = express();
-                    apolloServer.applyMiddleware({ app });
-                    app.set('view engine', 'pug')
-                    app.use(express.static('public'))
-                    app.use(express.urlencoded({ extended: false }));
-                    app.use(cookieParser());
-                    app.use(expressValidator());
-                    // app.use(middleware(config));
-                    // app.use(bodyParser.json());
+            await nextApp.prepare()
+            const app = express();
+            apolloServer.applyMiddleware({ app });
+            app.set('view engine', 'pug')
+            app.use(express.static('public'))
+            app.use(express.urlencoded({ extended: false }));
+            app.use(cookieParser());
+            app.use(expressValidator());
+            // app.use(middleware(config));
+            // app.use(bodyParser.json());
 
-                    app.get('/callback', (req, res) => {
-                        res.send('success');
-                    });
+            app.get('/callback', (req, res) => {
+                res.send('success');
+            });
 
-                    app.use('/', Routes);
+            app.use('/', Routes);
 
-                    app.post('/callback', middleware(config), async (req: Request, res: Response) => {
-                        Promise
-                            .all(req.body.events.map(handleEvent.default))
-                            .then((result) => res.json(result))
-                            .catch((err) => {
-                                console.error('err', err);
-                                res.status(500).end();
-                            });
+            app.post('/callback', middleware(config), async (req: Request, res: Response) => {
+                Promise
+                    .all(req.body.events.map(handleEvent.default))
+                    .then((result) => res.json(result))
+                    .catch((err) => {
+                        console.error('err', err);
+                        res.status(500).end();
                     });
-                    app.get('*', (req, res) => {
-                        // const parsedUrl = parse(req.url, true);
-                        // const { pathname, query } = parsedUrl;
-                        // app.render(req, res, pathname, { ...query, adisak: 'hi everyone' });
-                        return handle(req, res);
-                    });
-                    app.listen(port);
-                })
+            });
+            app.get('*', (req, res) => {
+                return handle(req, res);
+            });
+            app.listen(port);
             // register express routes from defined application routes
             // Routes.forEach(route => {
             //     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
