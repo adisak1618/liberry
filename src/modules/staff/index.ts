@@ -1,6 +1,6 @@
 import { ResolverMap } from "../../types/graphql-utils";
 import { Staff } from "../../entity/Staff";
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, Authorized } from "type-graphql";
 // export const resolvers: ResolverMap = {
 //   Query: {
 //     findStaffs: async () => {
@@ -12,6 +12,7 @@ import { Resolver, Query, Mutation, Arg } from "type-graphql";
 
 @Resolver()
 export class StaffResolver {
+  @Authorized()
   @Query(() => [Staff], { nullable: true })
   async findStaffs(): Promise<Staff[] | undefined> {
     return Staff.find({

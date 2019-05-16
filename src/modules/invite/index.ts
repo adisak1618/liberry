@@ -1,7 +1,7 @@
 import * as bcrypt from "bcryptjs";
 // import { ResolverMap } from "../../types/graphql-utils";
 import { Invite, StaffRole } from "../../entity/Invite";
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, Authorized } from "type-graphql";
 
 // export const resolvers: ResolverMap = {
 //   Query: {
@@ -24,6 +24,7 @@ import { Resolver, Query, Mutation, Arg } from "type-graphql";
 // };
 @Resolver()
 export class InviteResolver {
+  @Authorized()
   @Query(() => [Invite], { nullable: true })
   async findInvites(): Promise<Invite[] | undefined> {
     return Invite.find({
@@ -33,6 +34,7 @@ export class InviteResolver {
     });
   }
 
+  @Authorized()
   @Mutation(() => Invite)
   async createInvite(
     @Arg("name") name: string,

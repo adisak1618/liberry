@@ -1,7 +1,8 @@
 import "reflect-metadata";
 import { middleware } from "@line/bot-sdk";
 import { ApolloServer } from "apollo-server-express";
-import { Query, buildSchema, Resolver } from "type-graphql";
+import { buildSchema } from "type-graphql";
+import * as jwt from "jsonwebtoken";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { config } from "./utils/line_config";
@@ -15,7 +16,6 @@ import { LineUser } from "./entity/LineUser";
 import { createTypeormConn } from "./utils/createTypeormConn";
 // import { genSchema } from "./utils/genSchema";
 import { Resolvers } from "./modules"
-import { type } from "os";
 
 const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
@@ -51,19 +51,44 @@ try {
     const main = async () => {
         // init apollo-server
         const schema = await buildSchema({
-            resolvers: Resolvers
+            resolvers: Resolvers,
+            authChecker: ({ context: { req } }) => {
+                console.log('req.headers', req.headers.authorization);
+                const auth = req.headers.authorization;
+                if (auth) {
+                    const token = auth !== undefined ? auth.split("Bearer ")[1] : ""
+                    try {
+                        const decode_token = jwt.verify(token, process.env.LoginchannelSecret, {
+                            issuer: 'https://access.line.me',
+                            audience: process.env.LoginchannelID,
+                            algorithms: ['HS256']
+                        })
+                        console.log('wtf decode_token', decode_token);
+                        return true;
+                    } catch (error) {
+                        throw Error("not authenticated");
+                    }
+                }
+                throw Error("not authenticated");
+            }
         });
-        const apolloServer = new ApolloServer({ schema });
+        const apolloServer = new ApolloServer({
+            schema,
+            context: ({ req }) => {
+                // console.log('adisakcontext', context);
+                return ({ req });
+            }
+        });
         await createTypeormConn().then(async () => {
             // create express app
             await nextApp.prepare()
             const app = express();
-            apolloServer.applyMiddleware({ app });
             app.set('view engine', 'pug')
             app.use(express.static('public'))
             app.use(express.urlencoded({ extended: false }));
             app.use(cookieParser());
             app.use(expressValidator());
+            apolloServer.applyMiddleware({ app });
             // app.use(middleware(config));
             // app.use(bodyParser.json());
 
@@ -83,6 +108,7 @@ try {
                     });
             });
             app.get('*', (req, res) => {
+                // console.log('adisakreq', req.cookies, req.headers);
                 return handle(req, res);
             });
             app.listen(port);

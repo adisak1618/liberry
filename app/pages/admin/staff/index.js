@@ -43,10 +43,11 @@ const Admin = (props) => {
           <h2 class="bp3-heading">ผู้ดูแลระบบ</h2>
           <div className="member">
             <QueryStaff>
-              {({ loading, error, data: { findStaffs }, fetchMore }) => {
-                console.log('findStaffs', findStaffs);
-                if (error) return <div>Error loading posts.</div>
+              {({ loading, error, data, fetchMore }) => {
+                if (error) return <div>Error loading.</div>
                 if (loading) return <div>Loading</div>
+                if (!data) return <div>Error loading</div>
+                const { findStaffs } = data;
                 return (
                   <div class="pure-g">
                     <div class="pure-u-1-3">
@@ -117,9 +118,11 @@ const Admin = (props) => {
           </Row>
           <div className="member">
             <QueryInvite>
-              {({ loading, error, data: { findInvites }, fetchMore }) => {
+              {({ loading, error, data, fetchMore }) => {
                 if (error) return <div>Error loading posts.</div>
                 if (loading) return <div>Loading</div>
+                if (!data) return <div>hihihi</div>
+                const { findInvites } = data;
                 return (
                   <div class="pure-g">
                     {findInvites.map(({ name, role, code }, index) => (

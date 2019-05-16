@@ -27,7 +27,6 @@ router.get('/', async (req: Request, res: Response) => {
       form: form
     })
     const token = JSON.parse(data);
-    console.log('token', token, process.env.LoginchannelID);
     const decode_token = jwt.verify(token.id_token, process.env.LoginchannelSecret, {
       issuer: 'https://access.line.me',
       audience: process.env.LoginchannelID,
@@ -42,14 +41,15 @@ router.get('/', async (req: Request, res: Response) => {
     })
 
     if (staffs) {
-      res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
+      res.cookie('library-token', token.id_token, { maxAge: 900000, httpOnly: true });
+      // res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
+      res.redirect('http://localhost:3000/admin/staff');
     } else if (invite_code) {
       const invite = await Invite.findOne({
         where: {
           code: invite_code
         }
       })
-      console.log('invite', invite);
       if (invite) {
         invite.success = "true";
         const newStuff = Staff.create({
@@ -60,7 +60,8 @@ router.get('/', async (req: Request, res: Response) => {
         });
         await newStuff.save();
         await invite.save();
-        res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
+        // res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
+        res.redirect("https://line.me/R/ti/p/%40456buhvr");
       } else {
         // res.redirect('http://localhost:3000/');
         throw Error();
