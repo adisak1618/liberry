@@ -145,7 +145,7 @@ const Admin = (props) => {
                               <Popover
                                 content={
                                   <div className="share-invite">
-                                    <input type="text" class="bp3-input" readonly value={`${process.env.BASEURL}/admin/login?invite_code=${code}`} />
+                                    <input type="text" class="bp3-input" readonly value={`${process.env.APPBASEURL}/admin/login?invite_code=${code}`} />
                                   </div>
                                 }
                                 position={Position.TOP}

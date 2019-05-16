@@ -15,7 +15,7 @@ if (!process.browser) {
 
 function create (initialState, { getToken, fetchOptions }) {
   const httpLink = createHttpLink({
-    uri: 'http://localhost:3000/graphql',
+    uri: `${process.env.APPBASEURL}/graphql`,
     credentials: 'include',
     fetchOptions
   })

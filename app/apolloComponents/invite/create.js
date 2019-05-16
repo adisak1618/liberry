@@ -4,7 +4,7 @@ import { queryInvite } from './query';
 // import { client } from "../../lib/with-apollo-client";
 
 export const InviteMultation = gql`
-  mutation CreateInvite ($name: String!, $role: String!){
+  mutation ($name: String!, $role: String!){
     createInvite(name: $name, role: $role) {
       name
       role

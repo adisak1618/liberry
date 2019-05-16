@@ -14,7 +14,6 @@ import { Request, Response } from "express";
 import { Routes } from "./routes";
 import { LineUser } from "./entity/LineUser";
 import { createTypeormConn } from "./utils/createTypeormConn";
-// import { genSchema } from "./utils/genSchema";
 import { Resolvers } from "./modules"
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -26,27 +25,6 @@ const nextApp = next({
     dir: './app',
 });
 const handle = nextApp.getRequestHandler();
-// const schema = genSchema() as any;
-interface Me {
-    name: string,
-    age: number
-}
-// @Resolver()
-// class HelloResolver {
-//     @Query(() => any)
-//     async hello(): Promise<Me> {
-//         return {
-//             name: "adisak",
-//             age: 12
-//         };
-//     }
-
-//     @Query(() => String, { nullable: true, description: "second resolver" })
-//     async hello2() {
-//         return "Hello World2!";
-//     }
-// }
-
 try {
     const main = async () => {
         // init apollo-server

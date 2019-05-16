@@ -284,7 +284,7 @@ const init = async (action: Action, event: WebhookEvent & ReplyableEvent, user: 
 
           const { cover, name, category, writer, page_count, publisher, count, id } = book;
           const newBookMsg = BookTemplate({
-            cover: cover ? `https://s3-ap-southeast-1.amazonaws.com/tcliberry/${cover}` : `${process.env.BASEURL}/images/default-thumbnail.jpg`,
+            cover: cover ? `https://s3-ap-southeast-1.amazonaws.com/tcliberry/${cover}` : `${process.env.APPBASEURL}/images/default-thumbnail.jpg`,
             name,
             category: category.name,
             writer: writer.name,

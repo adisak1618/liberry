@@ -37,7 +37,6 @@ class CreateInvite extends Component {
   }
 
   render() {
-    console.log('test222', this.props);
     const { form } = this.props;
     const { getFieldDecorator, getFieldError } = form;
     return (
