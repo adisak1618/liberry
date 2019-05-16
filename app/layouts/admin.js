@@ -30,14 +30,14 @@ class MainLayout extends React.PureComponent {
         <Head>
           <title>{title}</title>
         </Head>
-        <nav class="bp3-navbar bp3-dark">
+        <nav className="bp3-navbar bp3-dark">
           <Container>
-            <div class="bp3-navbar-group bp3-align-left">
-              <div class="bp3-navbar-heading">TC Library</div>
+            <div className="bp3-navbar-group bp3-align-left">
+              <div className="bp3-navbar-heading">TC Library</div>
             </div>
-            <div class="bp3-navbar-group bp3-align-right">
-              <button class="bp3-button bp3-minimal bp3-icon-home">Home</button>
-              <span class="bp3-navbar-divider"></span>
+            <div className="bp3-navbar-group bp3-align-right">
+              <button className="bp3-button bp3-minimal bp3-icon-home">Home</button>
+              <span className="bp3-navbar-divider"></span>
               <Popover
                 content={
                   <div className="mainmenudropdown">
