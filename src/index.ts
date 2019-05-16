@@ -116,7 +116,7 @@ try {
             //     age: 24
             // }));
 
-            console.log(`Express server has started on port ${port}. Open http://localhost:${port} to see results`);
+            console.log(`Express server has started on port ${port}. Open ${process.env.APPBASEURL}:${port} to see results`);
         })
     }
     main();

@@ -15,9 +15,9 @@ router.get('/', async (req: Request, res: Response) => {
   const form = {
     grant_type: "authorization_code",
     code: code,
-    redirect_uri: `http://localhost:3000/admin/loginsuccess?invite_code=${invite_code}`,
-    client_id: '1574531203',
-    client_secret: '95a89ebebffb28a3c2d4254f45fab209'
+    redirect_uri: `${process.env.APPBASEURL}/admin/loginsuccess?invite_code=${invite_code}`,
+    client_id: process.env.LoginchannelID,
+    client_secret: process.env.LoginchannelSecret
   }
   // res.redirect(`http://localhost:3000/admin/success?code=${code}`);
   try {
@@ -43,7 +43,7 @@ router.get('/', async (req: Request, res: Response) => {
     if (staffs) {
       res.cookie('library-token', token.id_token, { maxAge: 900000 });
       // res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
-      res.redirect('http://localhost:3000/admin/staff');
+      res.redirect(`${process.env.APPBASEURL}/admin/staff`);
     } else if (invite_code) {
       const invite = await Invite.findOne({
         where: {
