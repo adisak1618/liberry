@@ -13,7 +13,9 @@ import { Request, Response } from "express";
 import { Routes } from "./routes";
 import { LineUser } from "./entity/LineUser";
 import { createTypeormConn } from "./utils/createTypeormConn";
-import { genSchema } from "./utils/genSchema";
+// import { genSchema } from "./utils/genSchema";
+import { Resolvers } from "./modules"
+import { type } from "os";
 
 const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
@@ -24,12 +26,19 @@ const nextApp = next({
     dir: './app',
 });
 const handle = nextApp.getRequestHandler();
-const schema = genSchema() as any;
+// const schema = genSchema() as any;
+interface Me {
+    name: string,
+    age: number
+}
 // @Resolver()
 // class HelloResolver {
-//     @Query(() => String, { nullable: true, description: "first resolver" })
-//     async hello() {
-//         return "Hello World!";
+//     @Query(() => any)
+//     async hello(): Promise<Me> {
+//         return {
+//             name: "adisak",
+//             age: 12
+//         };
 //     }
 
 //     @Query(() => String, { nullable: true, description: "second resolver" })
@@ -41,9 +50,9 @@ const schema = genSchema() as any;
 try {
     const main = async () => {
         // init apollo-server
-        // const schema = await buildSchema({
-        //     resolvers: [HelloResolver]
-        // });
+        const schema = await buildSchema({
+            resolvers: Resolvers
+        });
         const apolloServer = new ApolloServer({ schema });
         await createTypeormConn().then(async () => {
             // create express app

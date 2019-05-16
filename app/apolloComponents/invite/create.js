@@ -1,7 +1,7 @@
 import { Query, graphql, Mutation, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import { queryInvite } from './query';
-import { client } from "../../lib/with-apollo-client";
+// import { client } from "../../lib/with-apollo-client";
 
 export const InviteMultation = gql`
   mutation CreateInvite ($name: String!, $role: String!){
@@ -13,7 +13,7 @@ export const InviteMultation = gql`
   }
 `
 
-export default async (data) => {
+export default async (client, data) => {
   console.log('test');
   const result = await client.mutate({
     mutation: InviteMultation,

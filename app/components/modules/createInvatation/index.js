@@ -21,13 +21,14 @@ class CreateInvite extends Component {
   }
 
   createInvite() {
-    const { form } = this.props;
+    const { form, client } = this.props;
     const { validateFields, resetFields } = form;
     validateFields(async (error, value) => {
       try {
         if (!error) {
           console.log('data', value);
-          createInvite(value)
+          createInvite(client, value);
+          resetFields();
         }
       } catch (err) {
         alert('บางอย่างผิดพลาด โปรดลองใหม่อีกตรั้ง');
@@ -46,7 +47,7 @@ class CreateInvite extends Component {
             ชื่อ
             {getFieldDecorator('name', {
               validateTrigger: 'onBlur',
-              // initialValue: name,
+              initialValue: '',
               rules: [
                 { required: true, message: 'กรุณากรอก' },
                 // { type: 'email', message: 'กรุณากรอกอีเมลให้ถูกต้อง' },
@@ -104,4 +105,4 @@ class CreateInvite extends Component {
   }
 }
 
-export default createForm()(CreateInvite);
+export default createForm()(withApollo(CreateInvite));
