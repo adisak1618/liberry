@@ -37,14 +37,13 @@ function create (initialState, { getToken, fetchOptions }) {
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
         )
         console.log('isBrowser', process.browser)
-        // if(isBrowser && message.includes("not authenticated")) {
-        //   Router.replace("/admin/login");
-        // }
+        if(isBrowser && message.includes("not authenticated")) {
+          Router.replace("/admin/login");
+        }
       });
     console.log('5555', graphQLErrors);
     if (networkError) {
       console.log(`[Network error]: ${networkError}`);
-      Router.replace("/admin/login");
     }
   });
 
@@ -53,6 +52,7 @@ function create (initialState, { getToken, fetchOptions }) {
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: errorLink.concat(authLink.concat(httpLink)),
+    // link: httpLink,
     cache: new InMemoryCache().restore(initialState || {}),
     credentials: 'include',
   })

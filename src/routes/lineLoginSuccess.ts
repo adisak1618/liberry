@@ -41,7 +41,7 @@ router.get('/', async (req: Request, res: Response) => {
     })
 
     if (staffs) {
-      res.cookie('library-token', token.id_token, { maxAge: 900000, httpOnly: true });
+      res.cookie('library-token', token.id_token, { maxAge: 900000 });
       // res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
       res.redirect('http://localhost:3000/admin/staff');
     } else if (invite_code) {

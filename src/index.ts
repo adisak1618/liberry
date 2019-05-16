@@ -53,7 +53,6 @@ try {
         const schema = await buildSchema({
             resolvers: Resolvers,
             authChecker: ({ context: { req } }) => {
-                console.log('req.headers', req.headers.authorization);
                 const auth = req.headers.authorization;
                 if (auth) {
                     const token = auth !== undefined ? auth.split("Bearer ")[1] : ""
@@ -63,7 +62,6 @@ try {
                             audience: process.env.LoginchannelID,
                             algorithms: ['HS256']
                         })
-                        console.log('wtf decode_token', decode_token);
                         return true;
                     } catch (error) {
                         throw Error("not authenticated");
@@ -75,7 +73,6 @@ try {
         const apolloServer = new ApolloServer({
             schema,
             context: ({ req }) => {
-                // console.log('adisakcontext', context);
                 return ({ req });
             }
         });
@@ -108,7 +105,6 @@ try {
                     });
             });
             app.get('*', (req, res) => {
-                // console.log('adisakreq', req.cookies, req.headers);
                 return handle(req, res);
             });
             app.listen(port);

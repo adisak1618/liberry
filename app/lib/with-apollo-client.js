@@ -3,7 +3,7 @@ import cookie from 'cookie'
 import PropTypes from 'prop-types'
 import { getDataFromTree } from 'react-apollo'
 import Head from 'next/head'
-
+import Cookies from 'js-cookie';
 import initApollo from './init-apollo'
 import redirect from './redirect';
 
@@ -91,7 +91,7 @@ export default App => {
       // After that rendering is done using Next's normal rendering pipeline
       this.apolloClient = initApollo(props.apolloState, {
         getToken: () => {
-          return parseCookies(req)['library-token']
+          return parseCookies()['library-token']
         }
       })
     }
