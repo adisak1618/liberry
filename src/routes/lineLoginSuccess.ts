@@ -51,6 +51,7 @@ router.get('/', async (req: Request, res: Response) => {
       })
       console.log('invite', invite);
       if (invite) {
+        invite.success = "true";
         const newStuff = Staff.create({
           name: decode_token['name'],
           profile_url: decode_token['picture'],
@@ -58,6 +59,7 @@ router.get('/', async (req: Request, res: Response) => {
           lineid: decode_token['sub']
         });
         await newStuff.save();
+        await invite.save();
         res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
       } else {
         // res.redirect('http://localhost:3000/');
