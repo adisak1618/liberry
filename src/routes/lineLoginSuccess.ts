@@ -32,19 +32,22 @@ router.get('/', async (req: Request, res: Response) => {
       audience: process.env.LoginchannelID,
       algorithms: ['HS256']
     })
-    console.log('decode_token', decode_token);
-    console.log('invite_code', invite_code);
+    console.log('decode_token', decode_token, process.env.ADMINID);
+    console.log('invite_code', decode_token['sub'] === process.env.ADMINID);
     const staffs = await Staff.findOne({
       where: {
         lineid: decode_token["sub"]
       }
     })
 
+    console.log('staffs', staffs, typeof invite_code, invite_code !== undefined);
+
     if (staffs) {
       res.cookie('library-token', token.id_token, { maxAge: 900000 });
       // res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
       res.redirect(`${process.env.APPBASEURL}/admin/staff`);
-    } else if (invite_code) {
+    } else if (invite_code !== undefined && invite_code !== "undefined") {
+      console.log('invite_codestepp123');
       const invite = await Invite.findOne({
         where: {
           code: invite_code
@@ -66,6 +69,10 @@ router.get('/', async (req: Request, res: Response) => {
         // res.redirect('http://localhost:3000/');
         throw Error();
       }
+    } else if (decode_token["sub"] === process.env.ADMINID) {
+      console.log('wtfiamhere');
+      res.cookie('library-token', token.id_token, { maxAge: 900000 });
+      res.redirect(`${process.env.APPBASEURL}/admin/staff`);
     } else {
       throw Error();
       // res.redirect('http://localhost:3000/');
