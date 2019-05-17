@@ -42,33 +42,33 @@ router.get('/', async (req: Request, res: Response) => {
 
     console.log('staffs', staffs, typeof invite_code, invite_code !== undefined);
 
-    if (staffs) {
+    if (staffs && staffs.role === "admin") {
       res.cookie('library-token', token.id_token, { maxAge: 900000 });
       // res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
       res.redirect(`${process.env.APPBASEURL}/admin`);
-    // } else if (invite_code !== undefined && invite_code !== "undefined") {
-    //   console.log('invite_codestepp123');
-    //   const invite = await Invite.findOne({
-    //     where: {
-    //       code: invite_code
-    //     }
-    //   })
-    //   if (invite) {
-    //     invite.success = "true";
-    //     const newStuff = Staff.create({
-    //       name: decode_token['name'],
-    //       profile_url: decode_token['picture'],
-    //       role: invite.role,
-    //       lineid: decode_token['sub']
-    //     });
-    //     await newStuff.save();
-    //     await invite.save();
-    //     // res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
-    //     res.redirect("https://line.me/R/ti/p/%40456buhvr");
-    //   } else {
-    //     // res.redirect('http://localhost:3000/');
-    //     throw Error();
-    //   }
+      // } else if (invite_code !== undefined && invite_code !== "undefined") {
+      //   console.log('invite_codestepp123');
+      //   const invite = await Invite.findOne({
+      //     where: {
+      //       code: invite_code
+      //     }
+      //   })
+      //   if (invite) {
+      //     invite.success = "true";
+      //     const newStuff = Staff.create({
+      //       name: decode_token['name'],
+      //       profile_url: decode_token['picture'],
+      //       role: invite.role,
+      //       lineid: decode_token['sub']
+      //     });
+      //     await newStuff.save();
+      //     await invite.save();
+      //     // res.redirect(`http://localhost:3000/admin/success?token=${token.id_token}`);
+      //     res.redirect("https://line.me/R/ti/p/%40456buhvr");
+      //   } else {
+      //     // res.redirect('http://localhost:3000/');
+      //     throw Error();
+      //   }
     } else if (decode_token["sub"] === process.env.ADMINID) {
       res.cookie('library-token', token.id_token, { maxAge: 900000 });
       res.redirect(`${process.env.APPBASEURL}/admin/staff`);
