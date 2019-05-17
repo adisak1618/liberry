@@ -28,7 +28,6 @@ export default App => {
         {},
         {
           getToken: () => {
-            console.log('ccccceiei', parseCookies(req)['library-token']);
             return parseCookies(req)['library-token']
           }
         }

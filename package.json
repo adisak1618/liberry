@@ -84,8 +84,9 @@
       "build-ts": "tsc && copyfiles -u 1 src/**/*.graphql build",
       "watch": "tsc --watch",
       "postinstall": "npm run build-ts && npm run nextbuild app",
-      "dev": "NODE_ENV=develop nodemon build/index.js && copyfiles -u 1 src/**/*.graphql build",
-      "start": "NODE_ENV=production node build/index.js && copyfiles -u 1 src/**/*.graphql build",
+      "dev": "NODE_ENV=develop nodemon build/index.js",
+      "devserver": "DEVMODE=server ts-node-dev --respawn --ignore-watch node_modules --debug src/index.ts",
+      "start": "NODE_ENV=production node build/index.js",
       "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
    },
    "main": "index.js",

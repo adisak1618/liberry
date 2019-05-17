@@ -18,7 +18,7 @@ import { Resolvers } from "./modules"
 
 const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
-const dev = !isProduction;
+const dev = !isProduction && process.env.DEVMODE !== "server";
 // init next.js app
 const nextApp = next({
     dev,
