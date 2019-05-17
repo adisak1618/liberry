@@ -46,7 +46,6 @@ const Admin = (props) => {
               {({ loading, error, data, fetchMore }) => {
                 if (error) return <div>Error loading.</div>
                 if (loading) return <div>Loading</div>
-                if (!data) return <div>Error loading</div>
                 const { findStaffs } = data;
                 return (
                   <div class="pure-g">
@@ -119,9 +118,8 @@ const Admin = (props) => {
           <div className="member">
             <QueryInvite>
               {({ loading, error, data, fetchMore }) => {
-                if (error) return <div>Error loading posts.</div>
+                if (error) return <div>Error loading.</div>
                 if (loading) return <div>Loading</div>
-                if (!data) return <div>hihihi</div>
                 const { findInvites } = data;
                 return (
                   <div class="pure-g">

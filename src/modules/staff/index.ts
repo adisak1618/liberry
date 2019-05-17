@@ -1,7 +1,9 @@
 import { ResolverMap } from "../../types/graphql-utils";
 import { Staff, StaffRole } from "../../entity/Staff";
-import { Resolver, Query, Mutation, Arg, Authorized } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from "type-graphql";
+import * as jwt from "jsonwebtoken";
 import { Invite } from "../../entity/Invite";
+import { TokenPayload } from "./../types/tokenPayload";
 // export const resolvers: ResolverMap = {
 //   Query: {
 //     findStaffs: async () => {
@@ -21,6 +23,24 @@ export class StaffResolver {
         success: false
       }
     });
+  }
+
+  @Authorized()
+  @Query(() => TokenPayload, { nullable: true })
+  getProfile(
+    @Ctx() ctx: any
+  ): any {
+    try {
+      const auth = ctx.req.headers.authorization;
+      const { name, picture, sub, exp } = <any>jwt.verify(auth.split("Bearer ")[1], process.env.LoginchannelSecret, {
+        issuer: 'https://access.line.me',
+        audience: process.env.LoginchannelID,
+        algorithms: ['HS256']
+      })
+      return { name, picture, lineid: sub, exp };
+    } catch (error) {
+      throw Error('wtf');
+    }
   }
 
   @Mutation(() => Staff, { nullable: true })

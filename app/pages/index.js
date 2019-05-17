@@ -1,12 +1,19 @@
 import Button from '@material-ui/core/Button';
+import { Container } from 'components/container'
 
 export default function Index() {
   return (
-    <div>
-      <h1>Hello Next.js 👋</h1>
-      <Button variant="contained" component="span" color="primary">
-        Hello World
-      </Button>
-    </div>
+    <Container>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <center><h1>We will comming soon! 👋</h1></center>
+    </Container>
   )
 }
