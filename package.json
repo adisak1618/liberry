@@ -60,6 +60,7 @@
       "react": "^16.8.6",
       "react-apollo": "^2.5.5",
       "react-dom": "^16.8.6",
+      "recharts": "^1.6.0",
       "reflect-metadata": "^0.1.10",
       "request": "^2.88.0",
       "request-promise": "^4.2.4",
@@ -81,10 +82,10 @@
    "scripts": {
       "nextdev": "next app -p 80",
       "nextbuild": "next build",
-      "build-ts": "tsc && copyfiles -u 1 src/**/*.graphql build",
+      "build-ts": "tsc",
       "watch": "tsc --watch",
       "postinstall": "npm run build-ts && npm run nextbuild app",
-      "dev": "NODE_ENV=develop nodemon build/index.js",
+      "dev": "NODE_ENV=develop ts-node-dev --respawn --ignore-watch app src/index.ts",
       "devserver": "DEVMODE=server ts-node-dev --respawn --ignore-watch node_modules --debug src/index.ts",
       "start": "NODE_ENV=production node build/index.js",
       "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"

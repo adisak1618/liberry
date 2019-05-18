@@ -213,7 +213,8 @@ const handler = {
     }],
     func: (event: WebhookEvent & ReplyableEvent, action: Action) => {
       if (event.type === 'message' && event.message.type === 'text' && !isNaN(Number(event.message.text.trim()))) {
-        return { count: event.message.text.trim() };
+        const count = event.message.text.trim();
+        return { count, remain: count };
       }
     }
   },
