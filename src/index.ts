@@ -1,5 +1,6 @@
 import "reflect-metadata";
 require('newrelic');
+const http = require("http");
 import { middleware } from "@line/bot-sdk";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -121,6 +122,9 @@ try {
         })
     }
     main();
+    setInterval(function () {
+        http.get("http://tclibrary.herokuapp.com");
+    }, 100000); // every 5 minutes (300000)
 
 } catch (error) {
 }
