@@ -1,4 +1,5 @@
 import "reflect-metadata";
+require('newrelic');
 import { middleware } from "@line/bot-sdk";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
