@@ -56,70 +56,40 @@ try {
                 return ({ req });
             }
         });
-        await createTypeormConn().then(async () => {
-            // create express app
-            await nextApp.prepare()
-            const app = express();
-            app.set('view engine', 'pug')
-            app.use(express.static('public'))
-            app.use(express.urlencoded({ extended: false }));
-            app.use(cookieParser());
-            app.use(expressValidator());
-            apolloServer.applyMiddleware({ app });
-            // app.use(middleware(config));
-            // app.use(bodyParser.json());
+        const conn = await createTypeormConn()
+        conn.runMigrations();
+        await nextApp.prepare()
+        const app = express();
+        app.set('view engine', 'pug')
+        app.use(express.static('public'))
+        app.use(express.urlencoded({ extended: false }));
+        app.use(cookieParser());
+        app.use(expressValidator());
+        apolloServer.applyMiddleware({ app });
+        // app.use(middleware(config));
+        // app.use(bodyParser.json());
 
-            app.get('/callback', (req, res) => {
-                res.send('success');
-            });
+        app.get('/callback', (req, res) => {
+            res.send('success');
+        });
 
-            app.use('/', Routes);
+        app.use('/', Routes);
 
-            app.post('/callback', middleware(config), async (req: Request, res: Response) => {
-                Promise
-                    .all(req.body.events.map(handleEvent.default))
-                    .then((result) => res.json(result))
-                    .catch((err) => {
-                        console.error('err', err);
-                        res.status(500).end();
-                    });
-            });
-            app.get('*', (req, res) => {
-                return handle(req, res);
-            });
-            app.listen(port);
-            // register express routes from defined application routes
-            // Routes.forEach(route => {
-            //     (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-            //         const result = (new (route.controller as any))[route.action](req, res, next);
-            //         if (result instanceof Promise) {
-            //             result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
+        app.post('/callback', middleware(config), async (req: Request, res: Response) => {
+            Promise
+                .all(req.body.events.map(handleEvent.default))
+                .then((result) => res.json(result))
+                .catch((err) => {
+                    console.error('err', err);
+                    res.status(500).end();
+                });
+        });
+        app.get('*', (req, res) => {
+            return handle(req, res);
+        });
+        app.listen(port);
 
-            //         } else if (result !== null && result !== undefined) {
-            //             res.json(result);
-            //         }
-            //     });
-            // });
-
-            // setup express app here
-            // ...
-
-            // start express server
-
-            // insert new users for test
-            // await connection.manager.save(connection.manager.create(User, {
-            //     firstName: "Timber",
-            //     lastName: "Saw",
-            //     age: 27
-            // }));
-            // await connection.manager.save(connection.manager.create(User, {
-            //     firstName: "Phantom",
-            //     lastName: "Assassin",
-            //     age: 24
-            // }));
-
-            console.log(`Express server has started on port ${port}. Open ${process.env.APPBASEURL}:${port} to see results`);
-        })
+        console.log(`Express server has started on port ${port}. Open ${process.env.APPBASEURL}:${port} to see results`);
     }
     main();
     setInterval(function () {
