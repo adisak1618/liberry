@@ -32,8 +32,8 @@ export class BookResolver {
       .execute()
     return {
       book,
-      success: transection[0].success,
-      returnBook: transection[0].return
+      success: transection[0].success || 0,
+      returnBook: transection[0].return || 0
     };
   }
 }
