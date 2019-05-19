@@ -20,13 +20,13 @@ export class User extends BaseEntity {
     @Column()
     userClass: string;
 
-    @Column("integer")
+    @Column({ type: "integer", nullable: true })
     age: number;
 
     @Column()
     tel: string;
 
-    @Column()
+    @Column({ type: "character varying", nullable: true })
     profilePicture: string;
 
     @OneToOne(type => LineUser, lineuser => lineuser.user)

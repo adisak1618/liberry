@@ -46,7 +46,7 @@ const categoryLiffAppMsg = [{
           "type": "button",
           "action": {
             "type": "uri",
-            "label": "กดเพื่อเลือก2",
+            "label": "กดเพื่อเลือก",
             "uri": "line://app/1573406906-RkbAeGd9"
           },
           "style": "primary"

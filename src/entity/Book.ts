@@ -29,7 +29,7 @@ export class Book extends BaseEntity {
     price: number;
 
     @Field()
-    @Column()
+    @Column({ type: "character varying", unique: true })
     isbnCode: string;
 
     @Field()

@@ -94,14 +94,14 @@ const handler = {
       }
     }
   },
-  age: {
-    message: () => [{ type: 'text', text: 'อายุ?' }],
-    func: (event: WebhookEvent, action: Action) => {
-      if (event.type === 'message' && event.message.type === 'text' && !isNaN(Number(event.message.text.trim()))) {
-        return { age: event.message.text.trim() }
-      }
-    }
-  },
+  // age: {
+  //   message: () => [{ type: 'text', text: 'อายุ?' }],
+  //   func: (event: WebhookEvent, action: Action) => {
+  //     if (event.type === 'message' && event.message.type === 'text' && !isNaN(Number(event.message.text.trim()))) {
+  //       return { age: event.message.text.trim() }
+  //     }
+  //   }
+  // },
   tel: {
     message: () => [{ type: 'text', text: 'เบอร์โทรศัพท์?' }],
     func: (event: WebhookEvent, action: Action) => {
@@ -138,7 +138,7 @@ const handler = {
 
 const init = async (action: Action, event: WebhookEvent & ReplyableEvent, user: LineUser) => {
   const actionData = action.data || {};
-  const requireDataList = ['userCode', 'fullname', 'userClass', 'age', 'tel', 'profilePicture'];
+  const requireDataList = ['userCode', 'fullname', 'userClass', 'tel', 'profilePicture'];
   const RemainingJob = requireDataList.filter(item => !(item in actionData));
   try {
     if (!event) {
