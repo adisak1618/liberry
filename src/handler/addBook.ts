@@ -222,21 +222,22 @@ const handler = {
     message: () => coverMsg,
     func: async (event: WebhookEvent & ReplyableEvent, action: Action, user: LineUser) => {
       if (event.type === 'message' && event.message.type === 'image' && event.message.contentProvider.type === 'line') {
-        try {
-          const name = action.data.name || 'unknow';
-          // const uploadImage = uploadFromUrl(`https://api.line.me/v2/bot/message/${event.message.id}/content`, `bookcover/${name.replace('/', '')}-${(new Date()).getTime()}`, { Authorization: `Bearer ${process.env.channelAccessToken}` });
-          const uploadImage = uploadFromUrl({
-            url: `https://api.line.me/v2/bot/message/${event.message.id}/content`,
-            name: `${name.replace('/', '')}-${(new Date()).getTime()}`,
-            RequestHeaders: { Authorization: `Bearer ${process.env.channelAccessToken}` },
-            folder: 'bookcover/'
-          });
-          const pushMsg = client.pushMessage(user.lineid, { type: 'text', text: 'รอนิดนึงนะกำลังอัพโหลด....' });
-          const [data] = await Promise.all([uploadImage, pushMsg]);
-          return { cover: data['key'] };
-        } catch (error) {
-          return replyMessage(event.replyToken, [{ type: 'text', text: 'อัพโหลดผิดพลาด!!! โปรดลองใหม่' }]);
-        }
+        // try {
+        //   const name = action.data.name || 'unknow';
+        //   // const uploadImage = uploadFromUrl(`https://api.line.me/v2/bot/message/${event.message.id}/content`, `bookcover/${name.replace('/', '')}-${(new Date()).getTime()}`, { Authorization: `Bearer ${process.env.channelAccessToken}` });
+        //   const uploadImage = uploadFromUrl({
+        //     url: `https://api.line.me/v2/bot/message/${event.message.id}/content`,
+        //     name: `${name.replace('/', '')}-${(new Date()).getTime()}`,
+        //     RequestHeaders: { Authorization: `Bearer ${process.env.channelAccessToken}` },
+        //     folder: 'bookcover/'
+        //   });
+        //   const pushMsg = client.pushMessage(user.lineid, { type: 'text', text: 'รอนิดนึงนะกำลังอัพโหลด....' });
+        //   const [data] = await Promise.all([uploadImage, pushMsg]);
+        //   return { cover: data['key'] };
+        // } catch (error) {
+        //   return replyMessage(event.replyToken, [{ type: 'text', text: 'อัพโหลดผิดพลาด!!! โปรดลองใหม่' }]);
+        // }
+        return { cover: 'https://prodimage.images-bn.com/pimages/9780062315007_p0_v2_s550x406.jpg' };
       } else if (event.type === 'postback' && event.postback.data === 'cancle') {
         return { cover: null };
       }

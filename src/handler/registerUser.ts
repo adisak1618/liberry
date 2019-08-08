@@ -115,20 +115,21 @@ const handler = {
     message: () => profileMsg,
     func: async (event: WebhookEvent, action: Action, user: LineUser) => {
       if (event.type === 'message' && event.message.type === 'image' && event.message.contentProvider.type === 'line') {
-        try {
-          const name = action.data.userCode || 'unknow';
-          const uploadImage = uploadFromUrl({
-            url: `https://api.line.me/v2/bot/message/${event.message.id}/content`,
-            name: `${name.replace('/', '')}-${(new Date()).getTime()}`,
-            RequestHeaders: { Authorization: `Bearer ${process.env.channelAccessToken}` },
-            folder: "studentprofile/"
-          });
-          const pushMsg = client.pushMessage(user.lineid, { type: 'text', text: 'รอนิดนึงนะกำลังอัพโหลด....' });
-          const [data] = await Promise.all([uploadImage, pushMsg]);
-          return { profilePicture: data["key"] };
-        } catch (error) {
-          return replyMessage(event.replyToken, [{ type: 'text', text: 'อัพโหลดผิดพลาด!!! โปรดลองใหม่' }]);
-        }
+        // try {
+        //   const name = action.data.userCode || 'unknow';
+        //   const uploadImage = uploadFromUrl({
+        //     url: `https://api.line.me/v2/bot/message/${event.message.id}/content`,
+        //     name: `${name.replace('/', '')}-${(new Date()).getTime()}`,
+        //     RequestHeaders: { Authorization: `Bearer ${process.env.channelAccessToken}` },
+        //     folder: "studentprofile/"
+        //   });
+        //   const pushMsg = client.pushMessage(user.lineid, { type: 'text', text: 'รอนิดนึงนะกำลังอัพโหลด....' });
+        //   const [data] = await Promise.all([uploadImage, pushMsg]);
+        //   return { profilePicture: data["key"] };
+        // } catch (error) {
+        //   return replyMessage(event.replyToken, [{ type: 'text', text: 'อัพโหลดผิดพลาด!!! โปรดลองใหม่' }]);
+        // }
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Damien_Rice_live_2.jpg/200px-Damien_Rice_live_2.jpg"
       } else if (event.type === 'postback' && event.postback.data === 'cancle') {
         return { profilePicture: null };
       }
