@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import NProgress from 'nprogress'
 import Head from 'next/head';
 import Link from 'next/link';
 import Router from 'next/router';
@@ -10,6 +11,25 @@ import { Container } from 'components/container';
 import { withRouter } from 'next/router';
 import { media } from 'components/style/media-query';
 import GetProfileQuery from '../apolloComponents/staff/getProfile'
+
+NProgress.configure({
+  template: `<div class="bar" role="bar">
+              <div class="peg"></div>
+            </div>
+            <div class="spinner" role="spinner">
+              <div class="spinner-icon"></div>
+            </div>`
+});
+
+Router.onRouteChangeStart = (url) => {
+  NProgress.start()
+}
+Router.onRouteChangeComplete = () => {
+  NProgress.done()
+}
+Router.onRouteChangeError = () => {
+  NProgress.done()
+}
 
 const MainWrapper = styled.div`
   height: 100%;
