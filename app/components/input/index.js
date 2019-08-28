@@ -34,13 +34,13 @@ export class Input extends React.PureComponent {
     return (
       <InputWrapper type={type} className={className}>
         <InputItem className="bp3-input" {...this.props} />
-        {/* { error ? <IconWrapper><span class="bp3-icon-standard bp3-icon-projects" /> </IconWrapper>: '' } */}
+        {/* { error ? <IconWrapper><span className="bp3-icon-standard bp3-icon-projects" /> </IconWrapper>: '' } */}
         {
           error
             ? (
               <SpanError>
                 {/* <Icon icon="warning-sign" iconSize={10} /> */}
-                {/* <span class="bp3-icon-standard bp3-icon-warning-sign" /> */}
+                {/* <span className="bp3-icon-standard bp3-icon-warning-sign" /> */}
                 {error.map((value, index) => {
                   if (index === 0) return `${value}`;
                   return `, ${value}`;

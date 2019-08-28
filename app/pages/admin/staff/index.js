@@ -40,7 +40,7 @@ const Admin = (props) => {
     <AdminLayout>
       <Container>
         <StaffWrapper>
-          <h2 class="bp3-heading">ผู้ดูแลระบบ</h2>
+          <h2 className="bp3-heading">ผู้ดูแลระบบ</h2>
           <div className="member">
             <QueryStaff>
               {({ loading, error, data, fetchMore }) => {
@@ -48,21 +48,21 @@ const Admin = (props) => {
                 if (loading) return <div>Loading</div>
                 const { findStaffs } = data;
                 return (
-                  <div class="pure-g">
-                    <div class="pure-u-1-3">
+                  <div className="pure-g">
+                    <div className="pure-u-1-3">
                       <Card className="card " interactive={false} elevation={Elevation.TWO}>
                         <Row alignItem="center">
                           <Column>
                             <Avatar src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Iron_Man_bleeding_edge.jpg/250px-Iron_Man_bleeding_edge.jpg" />
                           </Column>
                           <Column fill>
-                            <div class="bp3-text-small">
+                            <div className="bp3-text-small">
                               <b>ชื่อ</b>
                             </div>
                             OTTO
                           </Column>
                           <Column className="type" alignself="space-end">
-                            <div class="bp3-text-small">
+                            <div className="bp3-text-small">
                               <b>ตำแหน่ง</b>
                             </div>
                             ADMIN
@@ -72,20 +72,20 @@ const Admin = (props) => {
                     </div>
                     {findStaffs.map(({ name, role, profile_url }) => {
                       return(
-                        <div class="pure-u-1-3">
+                        <div className="pure-u-1-3">
                           <Card className="card " interactive={false} elevation={Elevation.TWO}>
                             <Row alignItem="center">
                               <Column>
                                 <Avatar src={profile_url} />
                               </Column>
                               <Column fill>
-                                <div class="bp3-text-small">
+                                <div className="bp3-text-small">
                                   <b>ชื่อ</b>
                                 </div>
                                 {name}
                               </Column>
                               <Column className="type" alignself="space-end">
-                                <div class="bp3-text-small">
+                                <div className="bp3-text-small">
                                   <b>ตำแหน่ง</b>
                                 </div>
                                 {role}
@@ -104,7 +104,7 @@ const Admin = (props) => {
         <StaffWrapper>
           <Row space-between>
             <Column>
-              <h2 class="bp3-heading">คำเชิญ</h2>
+              <h2 className="bp3-heading">คำเชิญ</h2>
             </Column>
             <Column>
               <Popover
@@ -122,19 +122,19 @@ const Admin = (props) => {
                 if (loading) return <div>Loading</div>
                 const { findInvites } = data;
                 return (
-                  <div class="pure-g">
+                  <div className="pure-g">
                     {findInvites.map(({ name, role, code }, index) => (
-                      <div class="pure-u-1-3">
+                      <div className="pure-u-1-3">
                         <Card className="card " interactive={false} elevation={Elevation.TWO}>
                           <Row alignItem="center">
                             <Column fill>
-                              <div class="bp3-text-small">
+                              <div className="bp3-text-small">
                                 <b>ชื่อ</b>
                               </div>
                               {name}
                             </Column>
                             <Column className="type" alignself="space-end">
-                              <div class="bp3-text-small">
+                              <div className="bp3-text-small">
                                 <b>ตำแหน่ง</b>
                               </div>
                               {role.toUpperCase()}
@@ -143,7 +143,7 @@ const Admin = (props) => {
                               <Popover
                                 content={
                                   <div className="share-invite">
-                                    <input type="text" class="bp3-input" readonly value={`https://line.me/R/app/1574531203-XZRbjwMj?code=${code}`} />
+                                    <input type="text" className="bp3-input" readonly value={`https://line.me/R/app/1574531203-XZRbjwMj?code=${code}`} />
                                   </div>
                                 }
                                 position={Position.TOP}

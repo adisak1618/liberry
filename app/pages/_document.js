@@ -51,6 +51,7 @@ export default class MainDocument extends Document {
           <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css" />
           <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" />
           <link rel="stylesheet" href="/stylesheets/npprogress.css" />
+          <link rel="stylesheet" href="/stylesheets/style.css" />
           {/* <link rel="apple-touch-icon" sizes="180x180" href="/static/img/logo/apple-touch-icon.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/static/img/logo/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/static/img/logo/favicon-16x16.png" /> */}

@@ -10,3 +10,7 @@
   font-weight: bold;
   height: 80px;
 }
+
+.bp3-dialog {
+  width: auto !important;
+}

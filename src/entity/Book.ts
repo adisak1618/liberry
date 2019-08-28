@@ -17,6 +17,10 @@ export class Book extends BaseEntity {
     name: string;
 
     @Field()
+    @Column({ type: "text", nullable: true })
+    detail: string;
+
+    @Field()
     @Column("integer")
     page_count: number;
 

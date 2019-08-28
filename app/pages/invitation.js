@@ -87,23 +87,23 @@ class Invite extends PureComponent {
                 error ? <Card>
                   <Icon icon="error" iconSize={35} intent="danger"/>
                   <br /><br />
-                  <h2 class="bp3-heading">Link นี้ใช้งานไม่ได้</h2>
+                  <h2 className="bp3-heading">Link นี้ใช้งานไม่ได้</h2>
                 </Card>: (
                   (working) ? (
                     <Card>
                       {/* <h2>{profile_url}</h2> */}
-                      <h2 class="bp3-heading">กำลังดำเนินการ</h2>
+                      <h2 className="bp3-heading">กำลังดำเนินการ</h2>
                       <br />
                       <Spinner />
                       <br />
-                      <div class="bp3-running-text">
+                      <div className="bp3-running-text">
                         เรากำลังสร้างบัญชีผู้ใช้ใหม่ให้คุณกรุณารอซักครู่
                       </div>
                     </Card>
                   ): <Card>
                     <Icon icon="tick-circle" iconSize={35} intent="success"/>
                     <br /><br />
-                    <h2 class="bp3-heading">สำเร็จแล้ว</h2>
+                    <h2 className="bp3-heading">สำเร็จแล้ว</h2>
                     เริ่มใช้งาน line bot ของเราได้เลย
                     <br /><br />
                     <AnchorButton href="line://ti/p/%40456buhvr" onClick={this.closeWindown} large>เริ่มใช้งาน</AnchorButton>

@@ -4,7 +4,7 @@ import { createForm } from 'rc-form';
 import { FormGroup, InputGroup, Label, HTMLSelect, Button, Intent } from "@blueprintjs/core";
 import styled from 'styled-components';
 import { Input, SpanError } from 'components/input'
-import createInvite from "../../../apolloComponents/invite/create"
+import createInvite from "apolloComponents/invite/create"
 
 const Wrapper = styled.div`
   padding: 20px;

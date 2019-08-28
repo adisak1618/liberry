@@ -1,19 +1,26 @@
 import React, { PureComponent } from 'react';
 import Router, { withRouter } from 'next/router';
 import axios from 'axios';
-import { Spinner } from "@blueprintjs/core";
 import { Container } from 'components/container'
 import { Row, Column } from 'components/flex'
+import FindBookWithISBN from 'components/modules/findBook'
+import CreateBook from 'components/modules/createBook'
 import styled from 'styled-components';
-import Cookies from 'js-cookie';
 import Link from 'next/link'
-import { channelAccessToken, channelSecret } from '../../../config';
+import { AdminLayout } from 'layouts';
+import { Button, Card, Elevation } from "@blueprintjs/core";
 const Wrapper = styled.div`
-  margin-top: 200px;
-  padding: 50px;
-  width: 500px;
-  text-align: center;
+  padding: 50px 0;
 `;
+
+const ISBNPanel = styled.div`
+  max-width: 700px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  h3 {
+    text-align: center;
+  }
+`
 class FailLogin extends PureComponent {
   constructor(props) {
     super(props);
@@ -22,28 +29,30 @@ class FailLogin extends PureComponent {
 
   render() {
     return (
-      <Container>
-        <Row space-center>
-          <Column>
-            <Wrapper>
-              <div className="bp3-callout">
-                <div className="bp3-non-ideal-state">
-                  <div className="bp3-non-ideal-state-visual">
-                    <span className="bp3-icon bp3-icon-blocked-person"></span>
-                  </div>
-                  <h4 className="bp3-heading">คุณไม่มีสิทธิเข้าใช้ระบบนี้</h4>
-                  <div>โปรดติดต่อ 0993266161</div>
-                  <Link href="/">
-                    <span className="bp3-button bp3-intent-primary">กลับหน้าแรก</span>
-                  </Link>
-                </div>
-              </div>
-            </Wrapper>
-          </Column>
-        </Row>
-      </Container>
+      <AdminLayout>
+        <Wrapper>
+          <Container>
+            <AddBookBox>
+              <Card elevation={Elevation.ONE}>
+                <FindBookWithISBN />
+                <CreateBook />
+              </Card>
+            </AddBookBox>
+          </Container>
+        </Wrapper>
+      </AdminLayout>
     );
   }
 }
 
 export default FailLogin;
+
+
+const AddBookBox = styled.div`
+  max-width: 700px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  h3 {
+    text-align: center;
+  }
+`

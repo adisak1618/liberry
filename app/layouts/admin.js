@@ -76,9 +76,33 @@ class MainLayout extends React.PureComponent {
                   <Container>
                     <div className="bp3-navbar-group bp3-align-left">
                       <div className="bp3-navbar-heading">TC Library</div>
+                      <span className="bp3-navbar-divider"></span>
+                      <Link href="/admin"><button className="bp3-button bp3-minimal bp3-icon-dashboard">DASHBOARD</button></Link>
                     </div>
                     <div className="bp3-navbar-group bp3-align-right">
-                      <Link href="/admin"><button className="bp3-button bp3-minimal bp3-icon-dashboard">Dashboard</button></Link>
+                      <Popover
+                        content={
+                          <DropDownMenu>
+                            <Menu>
+                              <Link href="/admin/books/add">
+                                <Button fill minimal>
+                                  <Row space-between>
+                                    <div>เพิ่ม</div>
+                                    <Icon icon="add" />
+                                  </Row>
+                                </Button>
+                              </Link>
+                            </Menu>
+                          </DropDownMenu>
+                        }
+                        minimal={true}
+                        position={Position.BOTTOM_RIGHT}
+                      >
+                        <Button rightIcon="caret-down" minimal>
+                          Books
+                        </Button>
+                        {/* <button className="bp3-button bp3-minimal bp3-icon-user"></button> */}
+                      </Popover>
                       <span className="bp3-navbar-divider"></span>
                       <Popover
                         content={
@@ -91,7 +115,7 @@ class MainLayout extends React.PureComponent {
                               </MenuItem> */}
                               <Button fill minimal>
                                 <Row space-between>
-                                  <div>โปรไฟด์</div>
+                                  <div>เพิ่ม</div>
                                   <Icon icon="person" />
                                 </Row>
                               </Button>
@@ -133,7 +157,7 @@ class MainLayout extends React.PureComponent {
                             </Column>
                           </Row>
                         </Button>
-                        {/* <button class="bp3-button bp3-minimal bp3-icon-user"></button> */}
+                        {/* <button className="bp3-button bp3-minimal bp3-icon-user"></button> */}
                       </Popover>
                     </div>
                   </Container>

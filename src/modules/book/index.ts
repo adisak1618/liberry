@@ -36,4 +36,15 @@ export class BookResolver {
       returnBook: transection[0].return || 0
     };
   }
+
+  @Query(() => Book, { nullable: true })
+  async findBooks(
+    @Arg("isbn") isbn: string,
+  ) {
+    return Book.findOne({
+      where: {
+        isbnCode: isbn
+      }
+    });
+  }
 }
