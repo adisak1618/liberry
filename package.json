@@ -58,7 +58,7 @@
       "nprogress": "^0.2.0",
       "pg": "^7.3.0",
       "pg-connection-string": "^2.0.0",
-      "pug": "^2.0.3",
+      "pug": "^3.0.1",
       "query-string": "^6.5.0",
       "rc-form": "^2.4.5",
       "react": "^16.8.6",
