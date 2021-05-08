@@ -75,7 +75,7 @@
       "tsconfig-paths": "^3.8.0",
       "type-graphql": "^0.17.4",
       "typeface-roboto": "^0.0.54",
-      "typeorm": "0.2.17"
+      "typeorm": "0.2.25"
    },
    "nodemonConfig": {
       "ignore": [
